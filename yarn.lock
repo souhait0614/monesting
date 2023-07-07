@@ -157,11 +157,6 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.44.0.tgz#961a5903c74139390478bdc808bcde3fc45ab7af"
   integrity sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==
 
-"@fontsource/fira-mono@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@fontsource/fira-mono/-/fira-mono-5.0.4.tgz#3feb3d2d8e917dcc85e5035b1621c90fec9de186"
-  integrity sha512-Qe4WNf6IAoV1h0a5VOSnVYQTRl2Rizx3GFJcVhC7PknsxOksl+6r2bQomltTgcVjJ0M50M/8OxYbnckr289TYw==
-
 "@humanwhocodes/config-array@^0.11.10":
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.10.tgz#5a3ffe32cc9306365fb3fd572596cd602d5e12d2"
@@ -408,11 +403,6 @@
     "@material/feature-targeting" "^14.0.0"
     "@material/theme" "^14.0.0"
     tslib "^2.1.0"
-
-"@neoconfetti/svelte@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@neoconfetti/svelte/-/svelte-1.0.0.tgz#84a7f98981ad546d959d8c99460da8cebdf70301"
-  integrity sha512-SmksyaJAdSlMa9cTidVSIqYo1qti+WTsviNDwgjNVm+KQ3DRP2Df9umDIzC4vCcpEYY+chQe0i2IKnLw03AT8Q==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
