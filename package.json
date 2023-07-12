@@ -20,8 +20,12 @@
     "@smui/button": "7.0.0-beta.14",
     "@smui/card": "^7.0.0-beta.14",
     "@smui/common": "^7.0.0-beta.14",
+    "@smui/drawer": "^7.0.0-beta.14",
     "@smui/fab": "^7.0.0-beta.14",
     "@smui/icon-button": "^7.0.0-beta.14",
+    "@smui/list": "^7.0.0-beta.14",
+    "@smui/menu": "^7.0.0-beta.14",
+    "@smui/top-app-bar": "^7.0.0-beta.14",
     "@sveltejs/adapter-auto": "^2.1.0",
     "@sveltejs/kit": "^1.22.1",
     "@types/cookie": "^0.5.1",
@@ -48,6 +52,7 @@
     "google-auth-library": "^8.9.0",
     "googleapis": "^120.0.0",
     "normalize.css": "^8.0.1",
-    "svelte-google-auth": "^0.7.2"
+    "svelte-google-auth": "^0.7.2",
+    "svelte-local-storage-store": "^0.5.0"
   }
 }

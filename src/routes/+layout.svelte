@@ -1,8 +1,34 @@
-<script>
+<script lang="ts">
+  import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
+  import { AppContent, Scrim } from "@smui/drawer";
+  import Drawer from "./MenuDrawer.svelte";
+  import { theme } from "./store";
+  import { browser } from "$app/environment";
+  import "normalize.css";
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        enabled: browser,
+      },
+    },
+  });
 </script>
 
-<div class="app">
-  <main>
-    <slot />
-  </main>
-</div>
+<svelte:head>
+  {#if $theme === "light"}
+    <link rel="stylesheet" href="/smui.css" />
+  {:else if $theme === "dark"}
+    <link rel="stylesheet" href="/smui-dark.css" />
+  {/if}
+</svelte:head>
+
+<QueryClientProvider client={queryClient}>
+  <div class="app">
+    <Drawer />
+    <Scrim />
+    <AppContent class="app-content">
+      <slot />
+    </AppContent>
+  </div>
+</QueryClientProvider>

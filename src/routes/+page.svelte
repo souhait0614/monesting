@@ -1,11 +1,23 @@
 <script lang="ts">
-  import { initialize, signIn, signOut } from "svelte-google-auth/client";
-  import Button from "@smui/button";
+  import { initialize } from "svelte-google-auth/client";
+  import SmuiBottomAppBar, { AutoAdjust } from "@smui-extra/bottom-app-bar";
+  import { createQuery } from "@tanstack/svelte-query";
   import type { PageData } from "./$types";
+  import BottomAppBar from "./BottomAppBar.svelte";
+  import Welcome from "./Welcome.svelte";
   import { invalidateAll } from "$app/navigation";
+  import { QUERY_KEYS } from "$lib/const";
 
   export let data: PageData;
+  $: user = data.auth.user;
+  $: isSingedIn = user !== undefined;
   initialize(data, invalidateAll);
+
+  let bottomAppBar: SmuiBottomAppBar;
+
+  const query = createQuery({
+    queryKey: [QUERY_KEYS.items],
+  });
 </script>
 
 <svelte:head>
@@ -13,10 +25,27 @@
   <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-  <p>Monesting</p>
+{#if isSingedIn}
+  <AutoAdjust {bottomAppBar}>
+    <div class="test" />
+  </AutoAdjust>
+{:else}
+  <main class="welcome">
+    <Welcome />
+  </main>
+{/if}
 
-  {data.auth.user?.name}
-  <Button on:click={() => signIn()}>Sign In</Button>
-  <Button on:click={() => signOut()}>Sign Out</Button>
-</section>
+{#if isSingedIn}
+  <BottomAppBar {bottomAppBar} />
+{/if}
+
+<style lang="scss">
+  .welcome {
+    width: 100%;
+    height: 100vh;
+    height: 100lvh;
+  }
+  .test {
+    height: 200vh;
+  }
+</style>

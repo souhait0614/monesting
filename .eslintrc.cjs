@@ -28,7 +28,7 @@ module.exports = {
             style: "scss",
           },
         ],
-        "svelte/no-unused-class-name": "warn",
+        // "svelte/no-unused-class-name": "warn",
         "svelte/require-each-key": "error",
         "svelte/no-useless-mustaches": "warn",
       },
