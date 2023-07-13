@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Drawer, { Content, Header, Title } from "@smui/drawer";
+  import Drawer, { Content, Header, Subtitle, Title } from "@smui/drawer";
   import List, { Graphic, Item, Separator, Text } from "@smui/list";
   import { signOut } from "svelte-google-auth/client";
   import { openMenuDrawer } from "./store";
-  import { APP_NAME } from "$lib/const";
+  import { APP_DESCRIPTION, APP_NAME } from "$lib/const";
 
   const onClose = () => {
     $openMenuDrawer = false;
@@ -13,6 +13,7 @@
 <Drawer variant="modal" bind:open={$openMenuDrawer}>
   <Header>
     <Title>{APP_NAME}</Title>
+    <Subtitle>{APP_DESCRIPTION}</Subtitle>
   </Header>
   <Content>
     <List>

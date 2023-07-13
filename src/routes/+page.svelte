@@ -6,7 +6,7 @@
   import BottomAppBar from "./BottomAppBar.svelte";
   import Welcome from "./Welcome.svelte";
   import { invalidateAll } from "$app/navigation";
-  import { QUERY_KEYS } from "$lib/const";
+  import { APP_DESCRIPTION, APP_NAME, QUERY_KEYS } from "$lib/const";
 
   export let data: PageData;
   $: user = data.auth.user;
@@ -21,8 +21,8 @@
 </script>
 
 <svelte:head>
-  <title>Home</title>
-  <meta name="description" content="Svelte demo app" />
+  <title>{APP_NAME}</title>
+  <meta name="description" content={APP_DESCRIPTION} />
 </svelte:head>
 
 {#if isSingedIn}

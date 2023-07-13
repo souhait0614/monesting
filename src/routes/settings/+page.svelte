@@ -18,6 +18,10 @@
   } as const satisfies Record<THEMES, string>;
 </script>
 
+<svelte:head>
+  <title>設定</title>
+</svelte:head>
+
 <TopAppBar {topAppBar} />
 <AutoAdjust {topAppBar} class="mdc-top-app-bar--fixed-adjust">
   <div>
