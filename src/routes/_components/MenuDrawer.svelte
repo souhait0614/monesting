@@ -2,7 +2,7 @@
   import Drawer, { Content, Header, Subtitle, Title } from "@smui/drawer";
   import List, { Graphic, Item, Separator, Text } from "@smui/list";
   import { signOut } from "svelte-google-auth/client";
-  import { openMenuDrawer } from "./store";
+  import { openMenuDrawer } from "$lib/store";
   import { APP_DESCRIPTION, APP_NAME } from "$lib/const";
 
   const onClose = () => {

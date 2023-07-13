@@ -2,7 +2,7 @@
   import BottomAppBar, { Section } from "@smui-extra/bottom-app-bar";
   import IconButton from "@smui/icon-button";
   import Fab, { Icon } from "@smui/fab";
-  import { openMenuDrawer } from "./store";
+  import { openMenuDrawer } from "$lib/store";
 
   export let bottomAppBar: BottomAppBar;
   export let disableControlItems = false;

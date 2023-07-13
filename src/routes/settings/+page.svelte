@@ -3,8 +3,8 @@
   import SmuiTopAppBar, { AutoAdjust } from "@smui/top-app-bar";
 
   import Menu from "@smui/menu";
-  import TopAppBar from "../BackHomeAppBar.svelte";
-  import { theme } from "../store";
+  import TopAppBar from "../_components/BackHomeAppBar.svelte";
+  import { theme } from "../../lib/store";
   import { THEMES } from "$lib/const";
 
   let topAppBar: SmuiTopAppBar;

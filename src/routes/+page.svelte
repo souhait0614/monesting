@@ -3,7 +3,7 @@
   import SmuiBottomAppBar, { AutoAdjust } from "@smui-extra/bottom-app-bar";
   import { createQuery } from "@tanstack/svelte-query";
   import type { PageData } from "./$types";
-  import BottomAppBar from "./BottomAppBar.svelte";
+  import BottomAppBar from "./_components/BottomAppBar.svelte";
   import Welcome from "./Welcome.svelte";
   import { invalidateAll } from "$app/navigation";
   import { APP_DESCRIPTION, APP_NAME, QUERY_KEYS } from "$lib/const";

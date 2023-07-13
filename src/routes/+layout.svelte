@@ -1,8 +1,8 @@
 <script lang="ts">
   import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
   import { AppContent, Scrim } from "@smui/drawer";
-  import Drawer from "./MenuDrawer.svelte";
-  import { theme } from "./store";
+  import Drawer from "./_components/MenuDrawer.svelte";
+  import { theme } from "$lib/store";
   import { browser } from "$app/environment";
   import "normalize.css";
 
