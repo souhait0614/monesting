@@ -3,7 +3,7 @@
   import { signIn } from "svelte-google-auth/client";
   import { APP_NAME } from "$lib/const";
 
-  const scope = ["https://www.googleapis.com/auth/drive.appdata"];
+  const scope = ["https://www.googleapis.com/auth/drive.appdata", "openid", "profile", "email"];
 </script>
 
 <div class="welcome">
