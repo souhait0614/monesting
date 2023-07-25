@@ -5,11 +5,15 @@
   import { theme } from "$lib/store";
   import { browser } from "$app/environment";
   import "normalize.css";
+  import "@material/typography/mdc-typography.scss";
 
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         enabled: browser,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
       },
     },
   });

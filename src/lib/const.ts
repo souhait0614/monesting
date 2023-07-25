@@ -5,7 +5,7 @@ export const APP_DESCRIPTION = "サブスク管理アプリ";
 
 export const ITEM_DATA_FILE_NAME = "items.json";
 export const INITIAL_ITEM_DATA: ItemData = {
-  formatVersion: "1",
+  formatVersion: 1,
   items: [],
 };
 
