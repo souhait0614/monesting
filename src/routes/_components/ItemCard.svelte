@@ -2,6 +2,7 @@
   import Card, { PrimaryAction } from "@smui/card";
   import { differenceInDays, format } from "date-fns";
   import type { Frequency, Item } from "../../types/ItemData";
+  import EditItemModal from "./EditItemModal.svelte";
 
   const getNextPaymentDate = (
     { start, frequency: { year, month, day } }: Pick<Item, "start" | "frequency">,
@@ -27,11 +28,18 @@
 
   export let item: Item;
 
+  let openEditItemModal = false;
+
   $: nextPaymentDate = getNextPaymentDate(item, new Date());
 </script>
 
 <Card>
-  <PrimaryAction padded>
+  <PrimaryAction
+    padded
+    on:click={() => {
+      openEditItemModal = true;
+    }}
+  >
     <div class="grid">
       <div>
         <p class="mdc-typography--headline6" style="margin: 0;">{item.label}</p>
@@ -47,6 +55,10 @@
     </div>
   </PrimaryAction>
 </Card>
+
+{#if openEditItemModal}
+  <EditItemModal bind:open={openEditItemModal} mode="update" defaultValue={item} />
+{/if}
 
 <style lang="scss">
   .grid {

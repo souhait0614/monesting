@@ -13,6 +13,8 @@
   export let open = false;
   export let mode: "add" | "update";
 
+  export let defaultValue: Item | undefined = undefined;
+
   const text = {
     title: {
       add: "アイテム追加",
@@ -43,16 +45,30 @@
     await setItems(newItemData);
   };
 
-  let labelValue: string | null = null;
-  let fromValue: string | null = null;
-  let priceValue: number | null = null;
-  let currencyValue: string | null = null;
-  let startValue: string | null = format(new Date(), "yyyy-MM-dd");
-  let frequencyYearValue: number | null = 0;
-  let frequencyMonthValue: number | null = 0;
-  let frequencyDayValue: number | null = 0;
+  const updateItem = async (item: Item, itemData: ItemData) => {
+    const newItems: Item[] = [...itemData.items];
+    const index = newItems.findIndex(({ id }) => id === item.id);
+    if (index <= -1) throw new Error("更新対象見つからん");
+    newItems[index] = item;
+
+    const newItemData: ItemData = {
+      formatVersion: 1,
+      items: newItems,
+    };
+    await setItems(newItemData);
+  };
+
+  let labelValue: string | null = defaultValue?.label ?? null;
+  let fromValue: string | null = defaultValue?.from ?? null;
+  let priceValue: number | null = defaultValue?.price ?? null;
+  let currencyValue: string | null = defaultValue?.currency ?? null;
+  let startValue: string | null = format(defaultValue?.start ? new Date(defaultValue.start) : new Date(), "yyyy-MM-dd");
+  let frequencyYearValue: number | null = defaultValue?.frequency.year ?? 0;
+  let frequencyMonthValue: number | null = defaultValue?.frequency.month ?? 0;
+  let frequencyDayValue: number | null = defaultValue?.frequency.day ?? 0;
 
   $: tempItem = {
+    id: defaultValue?.id ?? "",
     label: labelValue ?? "",
     from: fromValue ?? "",
     price: priceValue ?? 0,
@@ -63,7 +79,7 @@
       month: frequencyMonthValue ?? 0,
       day: frequencyDayValue ?? 0,
     },
-  } satisfies Omit<Item, "id">;
+  } satisfies Item;
 
   $: disableApplyButton =
     labelValue === null ||
@@ -172,6 +188,7 @@
         const itemData = queryClient.getQueryData([QUERY_KEYS.items]);
         if (!isItem(tempItem) || !isItemData(itemData)) throw new Error("えらー");
         if (mode === "add") await addItem(tempItem, itemData);
+        else if (mode === "update") await updateItem(tempItem, itemData);
         await queryClient.invalidateQueries({
           queryKey: [QUERY_KEYS.items],
         });
