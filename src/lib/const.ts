@@ -20,3 +20,17 @@ export const THEMES = {
 } as const;
 
 export type THEMES = keyof typeof THEMES;
+
+export const SORT_BY = {
+  date: "date",
+  name: "name",
+} as const;
+
+export type SORT_BY = keyof typeof SORT_BY;
+
+export const SORT_ORDER = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SORT_ORDER = keyof typeof SORT_ORDER;

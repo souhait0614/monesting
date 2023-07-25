@@ -1,22 +1,9 @@
 <script lang="ts">
   import Card, { PrimaryAction } from "@smui/card";
-  import { differenceInDays, format } from "date-fns";
+  import { format } from "date-fns";
   import type { Frequency, Item } from "../../types/ItemData";
   import EditItemModal from "./EditItemModal.svelte";
-
-  const getNextPaymentDate = (
-    { start, frequency: { year, month, day } }: Pick<Item, "start" | "frequency">,
-    now: Date
-  ) => {
-    if (year <= 0 && month <= 0 && day <= 0) throw new Error("invalid frequency values");
-    const date = new Date(start);
-    while (differenceInDays(now, date) > 1) {
-      if (year) date.setFullYear(date.getFullYear() + 1);
-      if (month) date.setMonth(date.getMonth() + 1);
-      if (day) date.setDate(date.getDate() + 1);
-    }
-    return date;
-  };
+  import { getNextPaymentDate } from "$lib/util";
 
   const getFrequencyText = ({ year, month, day }: Frequency) => {
     let text = "";

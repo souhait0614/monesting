@@ -13,6 +13,8 @@
   import { APP_DESCRIPTION, APP_NAME, QUERY_KEYS } from "$lib/const";
   import { getItems } from "$lib/fetch";
   import { browser } from "$app/environment";
+  import { sortItems } from "$lib/sortItems";
+  import { sortBy, sortOrder } from "$lib/store";
 
   export let data: PageData;
   $: user = data.auth.user;
@@ -47,7 +49,7 @@
         <h1>
           {APP_NAME}
         </h1>
-        {#each items as item (item.id)}
+        {#each sortItems(items, $sortBy, $sortOrder) as item (item.id)}
           <ItemCard {item} />
         {/each}
         <!-- <ItemCard
