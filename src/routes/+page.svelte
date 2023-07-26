@@ -52,21 +52,6 @@
         {#each sortItems(items, $sortBy, $sortOrder) as item (item.id)}
           <ItemCard {item} />
         {/each}
-        <!-- <ItemCard
-          item={{
-            id: crypto.randomUUID(),
-            label: "souhait.me",
-            from: "Cloudflare Registrar",
-            price: 12.85,
-            currency: "USD",
-            start: new Date("1989/6/16"),
-            frequency: {
-              year: 1,
-              month: 0,
-              day: 0,
-            },
-          }}
-        /> -->
       </div>
     {/if}
     {#if $query.isError}

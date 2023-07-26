@@ -1,10 +1,13 @@
 <script lang="ts">
   import Button, { Label } from "@smui/button";
-  import Dialog, { Actions, Content, InitialFocus, Title } from "@smui/dialog";
+  import Dialog, { Actions, Content, Header, InitialFocus, Title } from "@smui/dialog";
   import TextField from "@smui/textfield";
   import Autocomplete from "@smui-extra/autocomplete";
   import { format } from "date-fns";
   import { useQueryClient } from "@tanstack/svelte-query";
+  import IconButton from "@smui/icon-button";
+  import Menu from "@smui/menu";
+  import List, { Item as ListItem } from "@smui/list";
   import { isItem, isItemData, type Item, type ItemData } from "../../types/ItemData";
   import { currencyCodes } from "$lib/currencyCodes";
   import { setItems } from "$lib/fetch";
@@ -34,8 +37,8 @@
     const newItems: Item[] = [
       ...itemData.items,
       {
-        id: uuid,
         ...item,
+        id: uuid,
       },
     ];
     const newItemData: ItemData = {
@@ -51,6 +54,15 @@
     if (index <= -1) throw new Error("更新対象見つからん");
     newItems[index] = item;
 
+    const newItemData: ItemData = {
+      formatVersion: 1,
+      items: newItems,
+    };
+    await setItems(newItemData);
+  };
+
+  const removeItem = async (itemId: string, itemData: ItemData) => {
+    const newItems: Item[] = [...itemData.items].filter(({ id }) => id !== itemId);
     const newItemData: ItemData = {
       formatVersion: 1,
       items: newItems,
@@ -89,13 +101,31 @@
     startValue === null ||
     frequencyYearValue === null ||
     frequencyMonthValue === null ||
-    frequencyDayValue === null;
+    frequencyDayValue === null ||
+    frequencyYearValue + frequencyMonthValue + frequencyDayValue <= 0;
 
   $: queryClient = useQueryClient();
+
+  let moreMenu: Menu;
+  let openDeleteDialog = false;
 </script>
 
 <Dialog bind:open escapeKeyAction="" scrimClickAction="" surface$style="width: 400px; max-width: calc(100vw - 32px);">
-  <Title>{text.title[mode]}</Title>
+  <Header style="display:flex; justify-content:space-between; align-items:end">
+    <Title>{text.title[mode]}</Title>
+    {#if mode === "update"}
+      <IconButton class="material-icons" on:click={() => moreMenu.setOpen(true)}>more_vert</IconButton>
+      <Menu bind:this={moreMenu} anchorCorner="TOP_LEFT" style="left:unset; right:0">
+        <List>
+          <ListItem
+            on:SMUI:action={() => {
+              openDeleteDialog = true;
+            }}>削除</ListItem
+          >
+        </List>
+      </Menu>
+    {/if}
+  </Header>
   <Content>
     <div class="container">
       <TextField
@@ -105,7 +135,7 @@
         label="名前"
         required
         bind:value={labelValue}
-        use={[InitialFocus]}
+        input$use={[InitialFocus]}
       />
       <TextField
         style="width: 100%;"
@@ -121,6 +151,7 @@
           helperLine$style="width: 100%;"
           variant="outlined"
           type="number"
+          input$step="0.01"
           label="請求額"
           required
           bind:value={priceValue}
@@ -182,8 +213,6 @@
       <Label>キャンセル</Label>
     </Button>
     <Button
-      action="apply"
-      disabled={disableApplyButton}
       on:click={async () => {
         const itemData = queryClient.getQueryData([QUERY_KEYS.items]);
         if (!isItem(tempItem) || !isItemData(itemData)) throw new Error("えらー");
@@ -193,8 +222,35 @@
           queryKey: [QUERY_KEYS.items],
         });
       }}
+      action="apply"
+      disabled={disableApplyButton}
     >
       <Label>{text.applyButtonLabel[mode]}</Label>
+    </Button>
+  </Actions>
+</Dialog>
+
+<Dialog bind:open={openDeleteDialog}>
+  <Title>{defaultValue?.label}を削除しますか？</Title>
+  <Content>
+    <p>削除すると元に戻すことはできません。</p>
+  </Content>
+  <Actions>
+    <Button>
+      <Label>キャンセル</Label>
+    </Button>
+    <Button
+      on:click={async () => {
+        open = false;
+        const itemData = queryClient.getQueryData([QUERY_KEYS.items]);
+        if (!tempItem.id || !isItemData(itemData)) throw new Error("えらー");
+        await removeItem(tempItem.id, itemData);
+        await queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.items],
+        });
+      }}
+    >
+      <Label>削除</Label>
     </Button>
   </Actions>
 </Dialog>
