@@ -8,10 +8,10 @@
   import IconButton from "@smui/icon-button";
   import Menu from "@smui/menu";
   import List, { Item as ListItem } from "@smui/list";
-  import { isItem, isItemData, type Item, type ItemData } from "../../types/ItemData";
+  import { isItem, isItemData, type Item } from "../../types/ItemData";
   import { currencyCodes } from "$lib/currencyCodes";
-  import { setItems } from "$lib/fetch";
   import { QUERY_KEYS } from "$lib/const";
+  import { addItem, updateItem, removeItem } from "$lib/item";
 
   export let open = false;
   export let mode: "add" | "update";
@@ -28,47 +28,6 @@
       update: "更新",
     },
   } as const satisfies Record<string, Record<typeof mode, string>>;
-
-  const addItem = async (item: Omit<Item, "id">, itemData: ItemData) => {
-    let uuid = crypto.randomUUID();
-    while (itemData.items.find(({ id }) => id === uuid)) {
-      uuid = crypto.randomUUID();
-    }
-    const newItems: Item[] = [
-      ...itemData.items,
-      {
-        ...item,
-        id: uuid,
-      },
-    ];
-    const newItemData: ItemData = {
-      formatVersion: 1,
-      items: newItems,
-    };
-    await setItems(newItemData);
-  };
-
-  const updateItem = async (item: Item, itemData: ItemData) => {
-    const newItems: Item[] = [...itemData.items];
-    const index = newItems.findIndex(({ id }) => id === item.id);
-    if (index <= -1) throw new Error("更新対象見つからん");
-    newItems[index] = item;
-
-    const newItemData: ItemData = {
-      formatVersion: 1,
-      items: newItems,
-    };
-    await setItems(newItemData);
-  };
-
-  const removeItem = async (itemId: string, itemData: ItemData) => {
-    const newItems: Item[] = [...itemData.items].filter(({ id }) => id !== itemId);
-    const newItemData: ItemData = {
-      formatVersion: 1,
-      items: newItems,
-    };
-    await setItems(newItemData);
-  };
 
   let labelValue: string | null = defaultValue?.label ?? null;
   let fromValue: string | null = defaultValue?.from ?? null;
@@ -102,6 +61,7 @@
     frequencyYearValue === null ||
     frequencyMonthValue === null ||
     frequencyDayValue === null ||
+    Number.isNaN(new Date(startValue).getTime()) ||
     frequencyYearValue + frequencyMonthValue + frequencyDayValue <= 0;
 
   $: queryClient = useQueryClient();
@@ -135,6 +95,7 @@
         label="名前"
         required
         bind:value={labelValue}
+        updateInvalid
         input$use={[InitialFocus]}
       />
       <TextField

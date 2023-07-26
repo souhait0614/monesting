@@ -14,3 +14,11 @@ export const getNextPaymentDate = (
   }
   return date;
 };
+
+export const getTrueUUID = (items: Item[]) => {
+  let uuid = crypto.randomUUID();
+  while (items.find(({ id }) => id === uuid)) {
+    uuid = crypto.randomUUID();
+  }
+  return uuid;
+};
