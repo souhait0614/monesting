@@ -183,10 +183,8 @@
           .with("add", () => addItem(tempItem, itemData))
           .with("update", () => updateItem(tempItem, itemData))
           .exhaustive();
+        queryClient.setQueryData([QUERY_KEYS.items], newItemData);
         await setItemData(newItemData);
-        await queryClient.invalidateQueries({
-          queryKey: [QUERY_KEYS.items],
-        });
       }}
       action="apply"
       disabled={disableApplyButton}
@@ -211,10 +209,8 @@
         const itemData = queryClient.getQueryData([QUERY_KEYS.items]);
         if (!tempItem.id || !isItemData(itemData)) throw new Error("えらー");
         const newItemData = removeItem(tempItem.id, itemData);
+        queryClient.setQueryData([QUERY_KEYS.items], newItemData);
         await setItemData(newItemData);
-        await queryClient.invalidateQueries({
-          queryKey: [QUERY_KEYS.items],
-        });
       }}
     >
       <Label>削除</Label>
