@@ -209,7 +209,7 @@
   <Actions>
     <Button>
       <Label>キャンセル</Label>
-    </Button>getItemData
+    </Button>
     <Button
       on:click={async () => {
         open = false;
