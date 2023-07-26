@@ -1,7 +1,10 @@
 {
   "name": "monesting",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -54,6 +57,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@inqling/svelte-icons": "^3.4.3",
     "@tanstack/svelte-query": "^4.32.0",
     "date-fns": "^2.30.0",
     "google-auth-library": "^9.0.0",

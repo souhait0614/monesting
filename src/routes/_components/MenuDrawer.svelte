@@ -21,6 +21,10 @@
         <Graphic class="material-icons" aria-hidden="true">settings</Graphic>
         <Text>設定</Text>
       </Item>
+      <Item href="/about" on:click={() => onClose()}>
+        <Graphic class="material-icons" aria-hidden="true">help</Graphic>
+        <Text>{APP_NAME}について</Text>
+      </Item>
     </List>
     <Separator />
     <List>
