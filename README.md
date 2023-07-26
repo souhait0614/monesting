@@ -32,6 +32,8 @@ AUTH_JWT_SECRET=" < 任意のjwt secret文字列 > "
 
 すでにyarn等を使用している場合は各自読み替えてください。
 
+また、pnpmは不具合が生じる可能性があるため非推奨です。(pnpm 8.6.2で確認)
+
 ```sh
 npm npm ci
 ```
