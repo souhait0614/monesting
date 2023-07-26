@@ -59,6 +59,7 @@
     "googleapis": "^120.0.0",
     "normalize.css": "^8.0.1",
     "svelte-google-auth": "^0.7.2",
-    "svelte-local-storage-store": "^0.5.0"
+    "svelte-local-storage-store": "^0.5.0",
+    "ts-pattern": "^5.0.4"
   }
 }

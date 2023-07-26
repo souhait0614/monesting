@@ -11,7 +11,7 @@
   import ItemCard from "./_components/ItemCard.svelte";
   import { invalidateAll } from "$app/navigation";
   import { APP_DESCRIPTION, APP_NAME, QUERY_KEYS } from "$lib/const";
-  import { getItems } from "$lib/fetch";
+  import { getItemData } from "$lib/fetch";
   import { browser } from "$app/environment";
   import { sortItems } from "$lib/sortItems";
   import { sortBy, sortOrder } from "$lib/store";
@@ -25,7 +25,7 @@
 
   $: query = createQuery({
     queryKey: [QUERY_KEYS.items],
-    queryFn: getItems,
+    queryFn: getItemData,
     enabled: browser && isSingedIn,
   });
 

@@ -1,8 +1,7 @@
 import type { Item, ItemData } from "../types/ItemData";
-import { setItems } from "./fetch";
 import { getTrueUUID } from "./util";
 
-export const addItem = async (item: Omit<Item, "id">, itemData: ItemData) => {
+export const addItem = (item: Omit<Item, "id">, itemData: ItemData) => {
   const uuid = getTrueUUID(itemData.items);
   const newItems: Item[] = [
     ...itemData.items,
@@ -15,11 +14,10 @@ export const addItem = async (item: Omit<Item, "id">, itemData: ItemData) => {
     formatVersion: 1,
     items: newItems,
   };
-  await setItems(newItemData);
-  return newItems;
+  return newItemData;
 };
 
-export const updateItem = async (item: Item, itemData: ItemData) => {
+export const updateItem = (item: Item, itemData: ItemData) => {
   const newItems: Item[] = [...itemData.items];
   const index = newItems.findIndex(({ id }) => id === item.id);
   if (index <= -1) throw new Error("更新対象見つからん");
@@ -29,14 +27,14 @@ export const updateItem = async (item: Item, itemData: ItemData) => {
     formatVersion: 1,
     items: newItems,
   };
-  await setItems(newItemData);
+  return newItemData;
 };
 
-export const removeItem = async (itemId: string, itemData: ItemData) => {
+export const removeItem = (itemId: string, itemData: ItemData) => {
   const newItems: Item[] = [...itemData.items].filter(({ id }) => id !== itemId);
   const newItemData: ItemData = {
     formatVersion: 1,
     items: newItems,
   };
-  await setItems(newItemData);
+  return newItemData;
 };

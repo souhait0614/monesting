@@ -8,10 +8,12 @@
   import IconButton from "@smui/icon-button";
   import Menu from "@smui/menu";
   import List, { Item as ListItem } from "@smui/list";
+  import { match } from "ts-pattern";
   import { isItem, isItemData, type Item } from "../../types/ItemData";
   import { currencyCodes } from "$lib/currencyCodes";
   import { QUERY_KEYS } from "$lib/const";
   import { addItem, updateItem, removeItem } from "$lib/item";
+  import { setItemData } from "$lib/fetch";
 
   export let open = false;
   export let mode: "add" | "update";
@@ -177,8 +179,11 @@
       on:click={async () => {
         const itemData = queryClient.getQueryData([QUERY_KEYS.items]);
         if (!isItem(tempItem) || !isItemData(itemData)) throw new Error("えらー");
-        if (mode === "add") await addItem(tempItem, itemData);
-        else if (mode === "update") await updateItem(tempItem, itemData);
+        const newItemData = match(mode)
+          .with("add", () => addItem(tempItem, itemData))
+          .with("update", () => updateItem(tempItem, itemData))
+          .exhaustive();
+        await setItemData(newItemData);
         await queryClient.invalidateQueries({
           queryKey: [QUERY_KEYS.items],
         });
@@ -205,7 +210,8 @@
         open = false;
         const itemData = queryClient.getQueryData([QUERY_KEYS.items]);
         if (!tempItem.id || !isItemData(itemData)) throw new Error("えらー");
-        await removeItem(tempItem.id, itemData);
+        const newItemData = removeItem(tempItem.id, itemData);
+        await setItemData(newItemData);
         await queryClient.invalidateQueries({
           queryKey: [QUERY_KEYS.items],
         });
