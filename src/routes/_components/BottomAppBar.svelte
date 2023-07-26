@@ -36,7 +36,7 @@
     >
   </Section>
   {#if !disableControlItems}
-    <Section fabInset>
+    <Section fabInset={!exitedFab}>
       <Fab
         aria-label="Add"
         color="primary"

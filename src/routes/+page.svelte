@@ -1,16 +1,17 @@
 <script lang="ts">
   import { initialize } from "svelte-google-auth/client";
   import SmuiBottomAppBar, { AutoAdjust } from "@smui-extra/bottom-app-bar";
-  import { createQuery } from "@tanstack/svelte-query";
+  import { createQuery, useIsMutating } from "@tanstack/svelte-query";
   import CircularProgress from "@smui/circular-progress";
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Button, { Label } from "@smui/button";
+  import Snackbar, { Label as SnackbarLabel } from "@smui/snackbar";
   import type { PageData } from "./$types";
   import BottomAppBar from "./_components/BottomAppBar.svelte";
   import Welcome from "./Welcome.svelte";
   import ItemCard from "./_components/ItemCard.svelte";
   import { invalidateAll } from "$app/navigation";
-  import { APP_DESCRIPTION, APP_NAME, QUERY_KEYS } from "$lib/const";
+  import { APP_DESCRIPTION, APP_NAME, MUTATION_KEYS, QUERY_KEYS } from "$lib/const";
   import { getItemData } from "$lib/fetch";
   import { browser } from "$app/environment";
   import { sortItems } from "$lib/sortItems";
@@ -22,14 +23,24 @@
   initialize(data, invalidateAll);
 
   let bottomAppBar: SmuiBottomAppBar;
+  let snackbar: Snackbar;
 
-  $: query = createQuery({
-    queryKey: [QUERY_KEYS.items],
+  $: getItemDataQuery = createQuery({
+    queryKey: [QUERY_KEYS.itemData],
     queryFn: getItemData,
     enabled: browser && isSingedIn,
   });
 
-  $: items = $query.data?.items ?? [];
+  $: isMutatingSetItemData = useIsMutating([MUTATION_KEYS.itemData]);
+
+  $: items = $getItemDataQuery.data?.items ?? [];
+
+  $: {
+    if (snackbar) {
+      if ($isMutatingSetItemData) snackbar.open();
+      else snackbar.close();
+    }
+  }
 </script>
 
 <svelte:head>
@@ -38,13 +49,13 @@
 </svelte:head>
 
 {#if isSingedIn}
-  <AutoAdjust {bottomAppBar} class="smui-bottom-app-bar--fixed-adjust">
-    {#if $query.isFetching}
+  <AutoAdjust {bottomAppBar}>
+    {#if $getItemDataQuery.isFetching}
       <div class="loading">
         <CircularProgress style="height: 40px; width: 40px;" indeterminate />
       </div>
     {/if}
-    {#if !$query.isFetching && $query.isSuccess}
+    {#if !$getItemDataQuery.isFetching && $getItemDataQuery.isSuccess}
       <div class="stack">
         <h1>
           {APP_NAME}
@@ -54,12 +65,12 @@
         {/each}
       </div>
     {/if}
-    {#if $query.isError}
+    {#if $getItemDataQuery.isError}
       <Dialog open scrimClickAction="" escapeKeyAction="" aria-labelledby="error" aria-describedby="error-message">
         <Title id="error">エラーが発生しました</Title>
         <Content id="error-message">
           <p>リロードしても解決しない場合、Cookieを削除してください。</p>
-          <p>{String($query.error)}</p>
+          <p>{String($getItemDataQuery.error)}</p>
         </Content>
         <Actions>
           <Button
@@ -72,8 +83,11 @@
         </Actions>
       </Dialog>
     {/if}
+    <Snackbar bind:this={snackbar} timeoutMs={-1}>
+      <SnackbarLabel>更新中……</SnackbarLabel>
+    </Snackbar>
   </AutoAdjust>
-  <BottomAppBar {bottomAppBar} exitedFab={$query.isLoading} />
+  <BottomAppBar bind:bottomAppBar exitedFab={$getItemDataQuery.isLoading} />
 {:else}
   <main class="welcome">
     <Welcome />

@@ -4,14 +4,14 @@
   import TextField from "@smui/textfield";
   import Autocomplete from "@smui-extra/autocomplete";
   import { format } from "date-fns";
-  import { useQueryClient } from "@tanstack/svelte-query";
+  import { createMutation, useIsMutating, useQueryClient } from "@tanstack/svelte-query";
   import IconButton from "@smui/icon-button";
   import Menu from "@smui/menu";
   import List, { Item as ListItem } from "@smui/list";
   import { match } from "ts-pattern";
   import { isItem, isItemData, type Item } from "../../types/ItemData";
   import { currencyCodes } from "$lib/currencyCodes";
-  import { QUERY_KEYS } from "$lib/const";
+  import { MUTATION_KEYS, QUERY_KEYS } from "$lib/const";
   import { addItem, updateItem, removeItem } from "$lib/item";
   import { setItemData } from "$lib/fetch";
 
@@ -65,6 +65,13 @@
     frequencyDayValue === null ||
     Number.isNaN(new Date(startValue).getTime()) ||
     frequencyYearValue + frequencyMonthValue + frequencyDayValue <= 0;
+
+  $: setItemDataMutation = createMutation({
+    mutationFn: setItemData,
+    mutationKey: [MUTATION_KEYS.itemData],
+  });
+
+  $: isMutatingSetItemData = useIsMutating([MUTATION_KEYS.itemData]);
 
   $: queryClient = useQueryClient();
 
@@ -177,17 +184,17 @@
     </Button>
     <Button
       on:click={async () => {
-        const itemData = queryClient.getQueryData([QUERY_KEYS.items]);
+        const itemData = queryClient.getQueryData([QUERY_KEYS.itemData]);
         if (!isItem(tempItem) || !isItemData(itemData)) throw new Error("えらー");
         const newItemData = match(mode)
           .with("add", () => addItem(tempItem, itemData))
           .with("update", () => updateItem(tempItem, itemData))
           .exhaustive();
-        queryClient.setQueryData([QUERY_KEYS.items], newItemData);
-        await setItemData(newItemData);
+        queryClient.setQueryData([QUERY_KEYS.itemData], newItemData);
+        $setItemDataMutation.mutate(newItemData);
       }}
       action="apply"
-      disabled={disableApplyButton}
+      disabled={disableApplyButton || Boolean($isMutatingSetItemData)}
     >
       <Label>{text.applyButtonLabel[mode]}</Label>
     </Button>
@@ -202,16 +209,17 @@
   <Actions>
     <Button>
       <Label>キャンセル</Label>
-    </Button>
+    </Button>getItemData
     <Button
       on:click={async () => {
         open = false;
-        const itemData = queryClient.getQueryData([QUERY_KEYS.items]);
+        const itemData = queryClient.getQueryData([QUERY_KEYS.itemData]);
         if (!tempItem.id || !isItemData(itemData)) throw new Error("えらー");
         const newItemData = removeItem(tempItem.id, itemData);
-        queryClient.setQueryData([QUERY_KEYS.items], newItemData);
-        await setItemData(newItemData);
+        queryClient.setQueryData([QUERY_KEYS.itemData], newItemData);
+        $setItemDataMutation.mutate(newItemData);
       }}
+      disabled={Boolean($isMutatingSetItemData)}
     >
       <Label>削除</Label>
     </Button>

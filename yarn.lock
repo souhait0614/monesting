@@ -525,6 +525,25 @@
     "@material/theme" "^14.0.0"
     tslib "^2.1.0"
 
+"@material/snackbar@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-14.0.0.tgz#eebea965d2090d27e290c3a1497d9fcd89ddc968"
+  integrity sha512-28uQBj9bw7BalNarK9j8/aVW4Ys5aRaGHoWH+CeYvAjqQUJkrYoqM52aiKhBwqrjBPMJHk1aXthe3YbzMBm6vA==
+  dependencies:
+    "@material/animation" "^14.0.0"
+    "@material/base" "^14.0.0"
+    "@material/button" "^14.0.0"
+    "@material/dom" "^14.0.0"
+    "@material/elevation" "^14.0.0"
+    "@material/feature-targeting" "^14.0.0"
+    "@material/icon-button" "^14.0.0"
+    "@material/ripple" "^14.0.0"
+    "@material/rtl" "^14.0.0"
+    "@material/shape" "^14.0.0"
+    "@material/theme" "^14.0.0"
+    "@material/typography" "^14.0.0"
+    tslib "^2.1.0"
+
 "@material/textfield@^14.0.0":
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/@material/textfield/-/textfield-14.0.0.tgz#8ce939ef38a083104e4585b8ebf25c840c1c40b6"
@@ -814,6 +833,20 @@
     "@material/dom" "^14.0.0"
     "@material/ripple" "^14.0.0"
     "@smui/common" "^7.0.0-beta.14"
+    svelte2tsx "^0.6.15"
+
+"@smui/snackbar@^7.0.0-beta.14":
+  version "7.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/@smui/snackbar/-/snackbar-7.0.0-beta.14.tgz#32dd592cb24c2559a1a7bccbd9ff35b0b370ec75"
+  integrity sha512-G9DmhKta5PgXRUy9MYeHhzE8r8hVsnsM5KWovTgjQhwDaPvCtgcGkyueIEPkFFKIIf6d/Qth6GNLrZsGPXEETA==
+  dependencies:
+    "@material/dom" "^14.0.0"
+    "@material/feature-targeting" "^14.0.0"
+    "@material/snackbar" "^14.0.0"
+    "@smui/button" "^7.0.0-beta.14"
+    "@smui/common" "^7.0.0-beta.14"
+    "@smui/icon-button" "^7.0.0-beta.14"
+    "@smui/ripple" "^7.0.0-beta.14"
     svelte2tsx "^0.6.15"
 
 "@smui/textfield@^7.0.0-beta.14":

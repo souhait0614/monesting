@@ -10,7 +10,11 @@ export const INITIAL_ITEM_DATA: ItemData = {
 };
 
 export const QUERY_KEYS = {
-  items: "items",
+  itemData: Symbol("itemData"),
+} as const;
+
+export const MUTATION_KEYS = {
+  itemData: Symbol("itemData"),
 } as const;
 
 export const THEMES = {
