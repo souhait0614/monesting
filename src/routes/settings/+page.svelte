@@ -22,34 +22,32 @@
   <title>設定</title>
 </svelte:head>
 
-<TopAppBar {topAppBar} />
-<AutoAdjust {topAppBar} class="mdc-top-app-bar--fixed-adjust">
-  <div>
-    <List twoLine>
-      <Item
-        on:SMUI:action={() => {
-          themeMenu.setOpen(true);
-        }}
-      >
-        <Graphic class="material-icons" aria-hidden="true">brightness_6</Graphic>
-        <Text>
-          <PrimaryText>テーマ</PrimaryText>
-          <SecondaryText>{themeNames[$theme]}</SecondaryText>
-        </Text>
-      </Item>
+<TopAppBar bind:topAppBar title="設定" />
+<AutoAdjust {topAppBar}>
+  <List twoLine>
+    <Item
+      on:SMUI:action={() => {
+        themeMenu.setOpen(true);
+      }}
+    >
+      <Graphic class="material-icons" aria-hidden="true">brightness_6</Graphic>
+      <Text>
+        <PrimaryText>テーマ</PrimaryText>
+        <SecondaryText>{themeNames[$theme]}</SecondaryText>
+      </Text>
+    </Item>
+  </List>
+  <Menu bind:this={themeMenu}>
+    <List>
+      {#each Object.values(THEMES) as id (id)}
+        <Item
+          on:SMUI:action={() => {
+            $theme = id;
+          }}
+        >
+          <Text>{themeNames[id] ?? id}</Text>
+        </Item>
+      {/each}
     </List>
-    <Menu bind:this={themeMenu}>
-      <List>
-        {#each Object.values(THEMES) as id (id)}
-          <Item
-            on:SMUI:action={() => {
-              $theme = id;
-            }}
-          >
-            <Text>{themeNames[id] ?? id}</Text>
-          </Item>
-        {/each}
-      </List>
-    </Menu>
-  </div>
+  </Menu>
 </AutoAdjust>
