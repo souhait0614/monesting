@@ -3,6 +3,7 @@
   import TopAppBar, { Section, Title } from "@smui/top-app-bar";
 
   export let topAppBar: TopAppBar;
+  export let title: string;
 </script>
 
 <TopAppBar bind:this={topAppBar} variant="fixed" color="secondary">
@@ -13,6 +14,6 @@
         history.back();
       }}>arrow_back</IconButton
     >
-    <Title>テスト</Title>
+    <Title>{title}</Title>
   </Section>
 </TopAppBar>
