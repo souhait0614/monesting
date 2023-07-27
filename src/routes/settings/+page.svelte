@@ -37,7 +37,7 @@
       </Text>
     </Item>
   </List>
-  <Menu bind:this={themeMenu}>
+  <Menu bind:this={themeMenu} anchorCorner="BOTTOM_LEFT">
     <List>
       {#each Object.values(THEMES) as id (id)}
         <Item

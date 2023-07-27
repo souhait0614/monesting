@@ -1442,6 +1442,22 @@
   dependencies:
     tslib "^2.1.0"
 
+"@material/radio@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/radio/-/radio-14.0.0.tgz#d80ccde907dd49733f48819a44c699a4472ea59b"
+  integrity sha512-VwPOi5fAoZXL3RhQJ6iDWTR34L6JXlwd5VXli8ZhzNHnUzcmpMODrRhGVew4Z5uuNj6/n2Jbn1zcS9XmmqjssA==
+  dependencies:
+    "@material/animation" "^14.0.0"
+    "@material/base" "^14.0.0"
+    "@material/density" "^14.0.0"
+    "@material/dom" "^14.0.0"
+    "@material/feature-targeting" "^14.0.0"
+    "@material/focus-ring" "^14.0.0"
+    "@material/ripple" "^14.0.0"
+    "@material/theme" "^14.0.0"
+    "@material/touch-target" "^14.0.0"
+    tslib "^2.1.0"
+
 "@material/ripple@^14.0.0":
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-14.0.0.tgz#4a6b3639197f39d78be967b46195007aedf06652"
@@ -1808,6 +1824,16 @@
     "@material/theme" "^14.0.0"
     "@material/typography" "^14.0.0"
     "@smui/common" "^7.0.0-beta.14"
+    svelte2tsx "^0.6.15"
+
+"@smui/radio@^7.0.0-beta.14":
+  version "7.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/@smui/radio/-/radio-7.0.0-beta.14.tgz#6b61597fc0776e8a1d72df18248ebe484e5fb31d"
+  integrity sha512-TYrbP0FSHgvtT1jz5iGS+czbtcuw42mhZpdLUYu5jTzqmJs4tJhCnp5+zFzWXMQFHynJQUGjr3KC4QdSLPCjxQ==
+  dependencies:
+    "@material/radio" "^14.0.0"
+    "@smui/common" "^7.0.0-beta.14"
+    "@smui/ripple" "^7.0.0-beta.14"
     svelte2tsx "^0.6.15"
 
 "@smui/ripple@^7.0.0-beta.14":

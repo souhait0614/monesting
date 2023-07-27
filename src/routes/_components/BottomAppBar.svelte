@@ -2,8 +2,10 @@
   import BottomAppBar, { Section } from "@smui-extra/bottom-app-bar";
   import IconButton from "@smui/icon-button";
   import Fab, { Icon } from "@smui/fab";
-  import Menu, { SelectionGroup, SelectionGroupIcon } from "@smui/menu";
-  import List, { Item, Separator, Subheader, Text } from "@smui/list";
+  import List, { Graphic, Item, Separator, Text } from "@smui/list";
+  import Dialog, { Actions, Content, Title } from "@smui/dialog";
+  import Button from "@smui/button/src/Button.svelte";
+  import Radio from "@smui/radio";
   import EditItemModal from "./EditItemModal.svelte";
   import { openMenuDrawer, sortBy, sortOrder } from "$lib/store";
   import { SORT_BY, SORT_ORDER } from "$lib/const";
@@ -18,8 +20,7 @@
   } as const satisfies Record<SORT_ORDER, string>;
 
   let openEditItemModal = false;
-
-  let sortMenu: Menu;
+  let openSortItemDialog = false;
 
   export let bottomAppBar: BottomAppBar;
   export let disableControlItems = false;
@@ -49,52 +50,43 @@
       </Fab>
     </Section>
     <Section>
-      <Menu bind:this={sortMenu} anchorCorner="BOTTOM_LEFT">
-        <List>
-          <SelectionGroup>
-            <Subheader>ソート</Subheader>
-            {#each Object.values(SORT_BY) as by (by)}
-              <Item
-                on:SMUI:action={() => {
-                  $sortBy = by;
-                }}
-                selected={$sortBy === by}
-              >
-                <SelectionGroupIcon>
-                  <Icon class="material-icons">check</Icon>
-                </SelectionGroupIcon>
-                <Text>{sortByNames[by]}</Text>
-              </Item>
-            {/each}
-          </SelectionGroup>
-          <Separator />
-          <SelectionGroup>
-            <Subheader>並び順</Subheader>
-            {#each Object.values(SORT_ORDER) as order (order)}
-              <Item
-                on:SMUI:action={() => {
-                  $sortOrder = order;
-                }}
-                selected={$sortOrder === order}
-              >
-                <SelectionGroupIcon>
-                  <Icon class="material-icons">check</Icon>
-                </SelectionGroupIcon>
-                <Text>{sortOrderNames[order]}</Text>
-              </Item>
-            {/each}
-          </SelectionGroup>
-        </List>
-      </Menu>
       <IconButton
         class="material-icons"
         on:click={() => {
-          sortMenu.setOpen(true);
+          openSortItemDialog = true;
         }}>sort</IconButton
       >
     </Section>
   {/if}
 </BottomAppBar>
+
+<Dialog bind:open={openSortItemDialog} selection>
+  <Title>ソート</Title>
+  <Content>
+    <List radioList>
+      {#each Object.values(SORT_BY) as by (by)}
+        <Item>
+          <Graphic>
+            <Radio bind:group={$sortBy} value={by} />
+          </Graphic>
+          <Text>{sortByNames[by]}</Text>
+        </Item>
+      {/each}
+      <Separator />
+      {#each Object.values(SORT_ORDER) as order (order)}
+        <Item>
+          <Graphic>
+            <Radio bind:group={$sortOrder} value={order} />
+          </Graphic>
+          <Text>{sortOrderNames[order]}</Text>
+        </Item>
+      {/each}
+    </List>
+  </Content>
+  <Actions>
+    <Button>閉じる</Button>
+  </Actions>
+</Dialog>
 
 {#if openEditItemModal}
   <EditItemModal bind:open={openEditItemModal} mode="add" />
