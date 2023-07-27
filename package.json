@@ -59,12 +59,14 @@
   "dependencies": {
     "@inqling/svelte-icons": "^3.4.3",
     "@tanstack/svelte-query": "^4.32.0",
+    "@vite-pwa/sveltekit": "^0.2.5",
     "date-fns": "^2.30.0",
     "google-auth-library": "^9.0.0",
     "googleapis": "^122.0.0",
     "normalize.css": "^8.0.1",
     "svelte-google-auth": "^0.7.2",
     "svelte-local-storage-store": "^0.5.0",
-    "ts-pattern": "^5.0.4"
+    "ts-pattern": "^5.0.4",
+    "vite-plugin-pwa": "^0.16.4"
   }
 }
