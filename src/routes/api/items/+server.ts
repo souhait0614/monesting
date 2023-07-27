@@ -64,7 +64,7 @@ export const GET: RequestHandler = async ({ locals, cookies }) => {
 
   const res = await drive.files.list({
     spaces: "appDataFolder",
-    fields: "files(webContentLink)",
+    fields: "files(id, name, webContentLink)",
   });
 
   const itemDataInfo = res.data.files?.find(({ name }) => name === ITEM_DATA_FILE_NAME);
