@@ -1,4 +1,4 @@
-export const currencyCodes = [
+export const CURRENCY_CODES = [
   "AED",
   "AFA",
   "ALL",
@@ -167,4 +167,6 @@ export const currencyCodes = [
   "ZAR",
   "ZMK",
   "ZWL",
-];
+] as const;
+
+export type CURRENCY_CODES = (typeof CURRENCY_CODES)[number];

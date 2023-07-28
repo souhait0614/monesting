@@ -66,6 +66,7 @@ strong {
 
 html,
 body {
+  display: block;
   background-color: theme.$surface;
   color: theme.$on-surface;
   min-height: 100%;

@@ -10,10 +10,11 @@
   import List, { Item as ListItem } from "@smui/list";
   import { match } from "ts-pattern";
   import { isItem, isItemData, type Item } from "../../types/ItemData";
-  import { currencyCodes } from "$lib/currencyCodes";
+  import { CURRENCY_CODES } from "$lib/currencyCodes";
   import { MUTATION_KEYS, QUERY_KEYS } from "$lib/const";
   import { addItem, updateItem, removeItem } from "$lib/item";
   import { setItemData } from "$lib/fetch";
+  import { defaultCurrency } from "$lib/store";
 
   export let open = false;
   export let mode: "add" | "update";
@@ -34,7 +35,7 @@
   let labelValue: string | null = defaultValue?.label ?? null;
   let fromValue: string | null = defaultValue?.from ?? null;
   let priceValue: number | null = defaultValue?.price ?? null;
-  let currencyValue: string | null = defaultValue?.currency ?? null;
+  let currencyValue: string | null = defaultValue?.currency ?? $defaultCurrency;
   let startValue: string | null = format(defaultValue?.start ? new Date(defaultValue.start) : new Date(), "yyyy-MM-dd");
   let frequencyYearValue: number | null = defaultValue?.frequency.year ?? 0;
   let frequencyMonthValue: number | null = defaultValue?.frequency.month ?? 0;
@@ -127,7 +128,7 @@
           bind:value={priceValue}
         />
         <Autocomplete
-          options={currencyCodes}
+          options={[...CURRENCY_CODES]}
           textfield$variant="outlined"
           label="通貨"
           textfield$required

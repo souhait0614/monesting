@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width" />
     <!-- Hint where we get fonts from. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <!-- SMUI Styles -->
-    <link rel="stylesheet" href="/smui.css" media="(prefers-color-scheme: light)" />
-    <link rel="stylesheet" href="/smui-dark.css" media="screen and (prefers-color-scheme: dark)" />
     <!-- Material Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <meta name="robots" content="noindex, nofollow" />
+    <style>
+      :where(html) {
+        background-color: #000;
+      }
+
+      :where(body) {
+        display: none;
+      }
+    </style>
     %sveltekit.head%
   </head>
 
