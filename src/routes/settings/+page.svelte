@@ -19,7 +19,7 @@
   let defaultCurrencyValue: CURRENCY_CODES | undefined;
 
   const themeNames = {
-    system: "システムに追従",
+    // system: "システムに追従",
     light: "ライト",
     dark: "ダーク",
   } as const satisfies Record<THEMES, string>;
