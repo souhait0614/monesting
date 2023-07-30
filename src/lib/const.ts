@@ -18,7 +18,7 @@ export const MUTATION_KEYS = {
 } as const;
 
 export const THEMES = {
-  system: "system",
+  // system: "system",
   light: "light",
   dark: "dark",
 } as const;

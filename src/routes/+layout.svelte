@@ -30,11 +30,8 @@
   {@html webManifestLink}
   {#if $theme === "light"}
     <link rel="stylesheet" href="/smui.css" />
-  {:else if $theme === "dark"}
+  {:else}
     <link rel="stylesheet" href="/smui-dark.css" />
-  {:else if $theme === "system"}
-    <link rel="stylesheet" href="/smui.css" media="(prefers-color-scheme: light)" />
-    <link rel="stylesheet" href="/smui-dark.css" media="screen and (prefers-color-scheme: dark)" />
   {/if}
 </svelte:head>
 
