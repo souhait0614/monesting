@@ -74,7 +74,6 @@
         </Item>
       {/each}
     </List>
-    <p style="padding:0 1rem">リロード後に反映されます。</p>
   </Content>
   <Actions>
     <Button>閉じる</Button>

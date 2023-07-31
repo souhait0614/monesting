@@ -26,13 +26,15 @@
   onMount(() => {
     const light = document.getElementById("smui-css-light");
     const dark = document.getElementById("smui-css-dark");
-    if ($theme === "light") {
-      light?.setAttribute("media", "screen");
-      dark?.setAttribute("media", "print");
-    } else {
-      // light.setAttribute("media", "print");
-      dark?.setAttribute("media", "screen");
-    }
+    theme.subscribe((val) => {
+      if (val === "light") {
+        light?.setAttribute("media", "all");
+        dark?.setAttribute("media", "print");
+      } else {
+        dark?.setAttribute("media", "all");
+        light?.setAttribute("media", "print");
+      }
+    });
   });
 </script>
 
