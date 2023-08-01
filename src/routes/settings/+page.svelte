@@ -6,12 +6,17 @@
   import Button from "@smui/button";
   import Autocomplete from "@smui-extra/autocomplete";
   import Radio from "@smui/radio";
+  import { createMutation } from "@tanstack/svelte-query";
+  import { format } from "date-fns";
+  import Snackbar, { Label } from "@smui/snackbar";
   import TopAppBar from "../_components/BackHomeAppBar.svelte";
   import { theme, defaultCurrency } from "../../lib/store";
   import { THEMES } from "$lib/const";
   import { CURRENCY_CODES } from "$lib/currencyCodes";
+  import { getItemData } from "$lib/fetch";
 
   let topAppBar: SmuiTopAppBar;
+  let exportingSnackbar: Snackbar;
 
   let openThemeDialog = false;
   let openDefaultCurrencyDialog = false;
@@ -23,6 +28,19 @@
     light: "ライト",
     dark: "ダーク",
   } as const satisfies Record<THEMES, string>;
+
+  $: exportMutation = createMutation({
+    mutationFn: async () => {
+      const itemData = await getItemData();
+      const blob = new Blob([JSON.stringify(itemData)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `monesting_export_${format(new Date(), "yyyy-MM-dd_HH:mm:ss")}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    },
+  });
 </script>
 
 <svelte:head>
@@ -58,7 +76,34 @@
         </Text>
       </Item>
     </List>
+    <Subheader>高度な機能</Subheader>
+    <List twoLine>
+      <Item
+        on:SMUI:action={async () => {
+          exportingSnackbar.open();
+          await $exportMutation.mutateAsync();
+          exportingSnackbar.close();
+        }}
+        disabled={$exportMutation.isLoading}
+      >
+        <Graphic class="material-icons" aria-hidden="true">file_download</Graphic>
+        <Text>
+          <PrimaryText>データをエクスポート</PrimaryText>
+          <SecondaryText>サブスクリプションのデータをjsonファイルに書き出します</SecondaryText>
+        </Text>
+      </Item>
+      <!-- <Item>
+        <Graphic class="material-icons" aria-hidden="true">file_upload</Graphic>
+        <Text>
+          <PrimaryText>データをインポート</PrimaryText>
+          <SecondaryText>エクスポートされたjsonファイルからサブスクリプションのデータを復元します</SecondaryText>
+        </Text>
+      </Item> -->
+    </List>
   </Group>
+  <Snackbar bind:this={exportingSnackbar} timeoutMs={-1}>
+    <Label>エクスポート中……</Label>
+  </Snackbar>
 </AutoAdjust>
 
 <Dialog bind:open={openThemeDialog} selection>
