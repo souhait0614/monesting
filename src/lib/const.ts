@@ -1,11 +1,12 @@
-import type { ItemData } from "../types/ItemData";
+import type { ItemData, ItemDataV2 } from "../types/ItemData";
 
 export const APP_NAME = "Monesting";
 export const APP_DESCRIPTION = "サブスク管理アプリ";
 
+export const USING_ITEM_DATA_FORMAT_VERSION = 2 satisfies ItemData["formatVersion"];
 export const ITEM_DATA_FILE_NAME = "items.json";
-export const INITIAL_ITEM_DATA: ItemData = {
-  formatVersion: 1,
+export const INITIAL_ITEM_DATA: ItemDataV2 = {
+  formatVersion: 2,
   items: [],
 };
 

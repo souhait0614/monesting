@@ -9,7 +9,8 @@
   import Menu from "@smui/menu";
   import List, { Item as ListItem } from "@smui/list";
   import { match } from "ts-pattern";
-  import { isItem, isItemData, type Item } from "../../types/ItemData";
+  import { isItemDataV2 } from "../../types/ItemData";
+  import { type ItemV2, isItemV2 } from "../../types/ItemV2";
   import { CURRENCY_CODES } from "$lib/currencyCodes";
   import { MUTATION_KEYS, QUERY_KEYS } from "$lib/const";
   import { addItem, updateItem, removeItem } from "$lib/item";
@@ -19,7 +20,7 @@
   export let open = false;
   export let mode: "add" | "update";
 
-  export let defaultValue: Item | undefined = undefined;
+  export let defaultValue: ItemV2 | undefined = undefined;
 
   const text = {
     title: {
@@ -40,6 +41,7 @@
   let frequencyYearValue: number | null = defaultValue?.frequency.year ?? 0;
   let frequencyMonthValue: number | null = defaultValue?.frequency.month ?? 0;
   let frequencyDayValue: number | null = defaultValue?.frequency.day ?? 0;
+  let noteValue: string | null = defaultValue?.note ?? null;
 
   $: tempItem = {
     id: defaultValue?.id ?? "",
@@ -47,13 +49,14 @@
     from: fromValue ?? "",
     price: priceValue ?? 0,
     currency: currencyValue ?? "",
-    start: new Date(startValue ?? ""),
+    start: startValue ?? "",
     frequency: {
       year: frequencyYearValue ?? 0,
       month: frequencyMonthValue ?? 0,
       day: frequencyDayValue ?? 0,
     },
-  } satisfies Item;
+    note: noteValue ?? "",
+  } satisfies ItemV2;
 
   $: disableApplyButton =
     labelValue === null ||
@@ -177,6 +180,7 @@
           bind:value={frequencyDayValue}
         />
       </div>
+      <TextField textarea bind:value={noteValue} label="ノート" />
     </div>
   </Content>
   <Actions>
@@ -186,7 +190,7 @@
     <Button
       on:click={async () => {
         const itemData = queryClient.getQueryData([QUERY_KEYS.itemData]);
-        if (!isItem(tempItem) || !isItemData(itemData)) throw new Error("えらー");
+        if (!isItemV2(tempItem) || !isItemDataV2(itemData)) throw new Error("えらー");
         const newItemData = match(mode)
           .with("add", () => addItem(tempItem, itemData))
           .with("update", () => updateItem(tempItem, itemData))
@@ -215,7 +219,7 @@
       on:click={async () => {
         open = false;
         const itemData = queryClient.getQueryData([QUERY_KEYS.itemData]);
-        if (!tempItem.id || !isItemData(itemData)) throw new Error("えらー");
+        if (!tempItem.id || !isItemDataV2(itemData)) throw new Error("えらー");
         const newItemData = removeItem(tempItem.id, itemData);
         queryClient.setQueryData([QUERY_KEYS.itemData], newItemData);
         $setItemDataMutation.mutate(newItemData);
