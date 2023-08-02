@@ -1,8 +1,8 @@
 import { differenceInDays, startOfDay } from "date-fns";
-import type { Item } from "../types/ItemData";
+import type { ItemV2 } from "../types/ItemV2";
 
 export const getNextPaymentDate = (
-  { start, frequency: { year, month, day } }: Pick<Item, "start" | "frequency">,
+  { start, frequency: { year, month, day } }: Pick<ItemV2, "start" | "frequency">,
   now: Date
 ) => {
   if (year <= 0 && month <= 0 && day <= 0) throw new Error("invalid frequency values");
@@ -15,7 +15,7 @@ export const getNextPaymentDate = (
   return date;
 };
 
-export const getTrueUUID = (items: Item[]) => {
+export const getTrueUUID = (items: ItemV2[]) => {
   let uuid = crypto.randomUUID();
   while (items.find(({ id }) => id === uuid)) {
     uuid = crypto.randomUUID();

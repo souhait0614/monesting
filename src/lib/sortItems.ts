@@ -1,8 +1,8 @@
-import type { Item } from "../types/ItemData";
+import type { ItemV2 } from "../types/ItemV2";
 import type { SORT_BY, SORT_ORDER } from "./const";
 import { getNextPaymentDate } from "./util";
 
-export const sortItems = (items: Item[], by: SORT_BY, order: SORT_ORDER) => {
+export const sortItems = (items: ItemV2[], by: SORT_BY, order: SORT_ORDER) => {
   const tempItems = [...items];
   const orderNum = order === "asc" ? 1 : -1;
   if (by === "date") {

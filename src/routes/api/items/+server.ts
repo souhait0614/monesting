@@ -6,7 +6,8 @@ import type { CookieSerializeOptions } from "cookie";
 import { isObject } from "../../../types/typeGuard";
 import type { ItemData } from "../../../types/ItemData";
 import type { RequestHandler } from "./$types";
-import { INITIAL_ITEM_DATA, ITEM_DATA_FILE_NAME } from "$lib/const";
+import { INITIAL_ITEM_DATA, ITEM_DATA_FILE_NAME, USING_ITEM_DATA_FORMAT_VERSION } from "$lib/const";
+import { upgradeFormat } from "$lib/upgradeFormat";
 
 const ITEM_DATA_FILE_ID = "item_data_file_id";
 
@@ -32,7 +33,7 @@ const createItemDataFile = async (drive: drive_v3.Drive) => {
   return data;
 };
 
-const getItemDataFile = async (id: string, cookies: Cookies, drive: drive_v3.Drive) => {
+const returnItemData = async (id: string, cookies: Cookies, drive: drive_v3.Drive) => {
   try {
     const setCookieOptions = {
       maxAge: 31536000,
@@ -43,8 +44,22 @@ const getItemDataFile = async (id: string, cookies: Cookies, drive: drive_v3.Dri
       alt: "media",
     });
     cookies.set(ITEM_DATA_FILE_ID, id, setCookieOptions);
-    return json(data);
+
+    const itemData = data as ItemData;
+    if (itemData.formatVersion < USING_ITEM_DATA_FORMAT_VERSION) {
+      const upgradedItemData = upgradeFormat(itemData);
+      await drive.files.update({
+        fileId: id,
+        media: {
+          mimeType: "application/json",
+          body: createBodyStream(upgradedItemData),
+        },
+      });
+      return json(upgradedItemData);
+    }
+    return json(itemData);
   } catch (err) {
+    console.error(err);
     if (isObject(err) && "code" in err && typeof err.code === "number") {
       throw error(err.code);
     }
@@ -60,7 +75,7 @@ export const GET: RequestHandler = async ({ locals, cookies }) => {
 
   const drive = google.drive({ version: "v3", auth: client });
 
-  if (itemDataFileId) return getItemDataFile(itemDataFileId, cookies, drive);
+  if (itemDataFileId) return returnItemData(itemDataFileId, cookies, drive);
 
   const res = await drive.files.list({
     spaces: "appDataFolder",
@@ -70,7 +85,7 @@ export const GET: RequestHandler = async ({ locals, cookies }) => {
   const itemDataInfo = res.data.files?.find(({ name }) => name === ITEM_DATA_FILE_NAME);
   const { id } = itemDataInfo ? itemDataInfo : await createItemDataFile(drive);
   if (!id) throw error(404);
-  return getItemDataFile(id, cookies, drive);
+  return returnItemData(id, cookies, drive);
 };
 
 export const POST: RequestHandler = async ({ locals, cookies, request }) => {
