@@ -22,3 +22,24 @@ export const getTrueUUID = (items: Item[]) => {
   }
   return uuid;
 };
+
+export const openFilePicker = (accept: string = "*"): Promise<FileList | null> => {
+  return new Promise((resolve) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = accept;
+    input.onchange = (event) => {
+      const files = (event.target as HTMLInputElement).files;
+      resolve(files);
+    };
+    input.click();
+  });
+};
+
+export const fileToObject = (file: File) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", ({ target }) => resolve(JSON.parse(String(target?.result))));
+    reader.addEventListener("error", (e) => reject(e));
+    reader.readAsText(file);
+  });

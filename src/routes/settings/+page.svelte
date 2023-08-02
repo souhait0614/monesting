@@ -6,22 +6,30 @@
   import Button from "@smui/button";
   import Autocomplete from "@smui-extra/autocomplete";
   import Radio from "@smui/radio";
-  import { createMutation } from "@tanstack/svelte-query";
+  import { createMutation, useIsMutating, useQueryClient } from "@tanstack/svelte-query";
   import { format } from "date-fns";
-  import Snackbar, { Label } from "@smui/snackbar";
+  import Snackbar, { Label as SnackbarLabel, Actions as SnackbarActions } from "@smui/snackbar";
+  import IconButton from "@smui/icon-button";
   import TopAppBar from "../_components/BackHomeAppBar.svelte";
   import { theme, defaultCurrency } from "../../lib/store";
-  import { THEMES } from "$lib/const";
+  import { isItemData, type ItemData } from "../../types/ItemData";
+  import { MUTATION_KEYS, QUERY_KEYS, THEMES } from "$lib/const";
   import { CURRENCY_CODES } from "$lib/currencyCodes";
-  import { getItemData } from "$lib/fetch";
+  import { getItemData, setItemData } from "$lib/fetch";
+  import { fileToObject, openFilePicker } from "$lib/util";
 
   let topAppBar: SmuiTopAppBar;
   let exportingSnackbar: Snackbar;
+  let importingSnackbar: Snackbar;
+  let importSuccessSnackbar: Snackbar;
 
   let openThemeDialog = false;
   let openDefaultCurrencyDialog = false;
+  let openImportDialog = false;
+  let openInvalidItemDataDialog = false;
 
   let defaultCurrencyValue: CURRENCY_CODES | undefined;
+  let importItemData: ItemData | undefined;
 
   const themeNames = {
     // system: "システムに追従",
@@ -41,6 +49,16 @@
       URL.revokeObjectURL(url);
     },
   });
+
+  $: setItemDataMutation = createMutation({
+    mutationFn: setItemData,
+    mutationKey: [MUTATION_KEYS.itemData],
+    cacheTime: 0,
+  });
+
+  $: isMutatingSetItemData = useIsMutating([MUTATION_KEYS.itemData]);
+
+  $: queryClient = useQueryClient();
 </script>
 
 <svelte:head>
@@ -92,17 +110,40 @@
           <SecondaryText>サブスクリプションのデータをjsonファイルに書き出します</SecondaryText>
         </Text>
       </Item>
-      <!-- <Item>
+      <Item
+        on:SMUI:action={async () => {
+          importItemData = undefined;
+          const files = await openFilePicker("application/json");
+          if (!files || !files[0]) return;
+          const itemData = await fileToObject(files[0]);
+          if (!isItemData(itemData)) {
+            openInvalidItemDataDialog = true;
+            return;
+          }
+          importItemData = itemData;
+          openImportDialog = true;
+        }}
+        disabled={$setItemDataMutation.isLoading}
+      >
         <Graphic class="material-icons" aria-hidden="true">file_upload</Graphic>
         <Text>
           <PrimaryText>データをインポート</PrimaryText>
           <SecondaryText>エクスポートされたjsonファイルからサブスクリプションのデータを復元します</SecondaryText>
         </Text>
-      </Item> -->
+      </Item>
     </List>
   </Group>
   <Snackbar bind:this={exportingSnackbar} timeoutMs={-1}>
-    <Label>エクスポート中……</Label>
+    <SnackbarLabel>エクスポート中……</SnackbarLabel>
+  </Snackbar>
+  <Snackbar bind:this={importingSnackbar} timeoutMs={-1}>
+    <SnackbarLabel>インポート中……</SnackbarLabel>
+  </Snackbar>
+  <Snackbar bind:this={importSuccessSnackbar}>
+    <SnackbarLabel>インポートに成功しました</SnackbarLabel>
+    <SnackbarActions>
+      <IconButton class="material-icons" title="Dismiss">close</IconButton>
+    </SnackbarActions>
   </Snackbar>
 </AutoAdjust>
 
@@ -147,5 +188,37 @@
         $defaultCurrency = defaultCurrencyValue;
       }}>反映</Button
     >
+  </Actions>
+</Dialog>
+
+<Dialog bind:open={openImportDialog} escapeKeyAction="" scrimClickAction="">
+  <Title>データをインポート</Title>
+  <Content>
+    <p>インポート前のデータは削除されます。よろしいですか？</p>
+  </Content>
+  <Actions>
+    <Button>キャンセル</Button>
+    <Button
+      disabled={Boolean($isMutatingSetItemData)}
+      on:click={async () => {
+        if (!importItemData) return;
+        importSuccessSnackbar.close();
+        importingSnackbar.open();
+        await $setItemDataMutation.mutateAsync(importItemData);
+        queryClient.setQueryData([QUERY_KEYS.itemData], importItemData);
+        importingSnackbar.close();
+        importSuccessSnackbar.open();
+      }}>インポート</Button
+    >
+  </Actions>
+</Dialog>
+
+<Dialog bind:open={openInvalidItemDataDialog}>
+  <Title>不正なデータです</Title>
+  <Content>
+    <p>正しい形式のデータを選択してください。</p>
+  </Content>
+  <Actions>
+    <Button>閉じる</Button>
   </Actions>
 </Dialog>
