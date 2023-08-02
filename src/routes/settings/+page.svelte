@@ -166,9 +166,9 @@
   </Actions>
 </Dialog>
 
-<Dialog bind:open={openDefaultCurrencyDialog} style="overflow-y:visible">
+<Dialog bind:open={openDefaultCurrencyDialog} surface$style="overflow:visible">
   <Title>デフォルト通貨</Title>
-  <Content style="overflow-y:visible">
+  <Content style="overflow:visible">
     <Autocomplete
       style="width: 100%;"
       textfield$style="width: 100%;"
