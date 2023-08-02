@@ -180,6 +180,7 @@
           bind:value={frequencyDayValue}
         />
       </div>
+      <TextField textarea bind:value={noteValue} label="ノート" />
     </div>
   </Content>
   <Actions>
