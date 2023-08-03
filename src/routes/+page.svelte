@@ -53,7 +53,7 @@
       <CircularProgress style="height: 40px; width: 40px;" indeterminate />
     </div>
   {/if}
-  <HomeAppBarContainer exitedFab={$getItemDataQuery.isLoading} disableControlItems={$getItemDataQuery.isLoading}>
+  <HomeAppBarContainer exitedFab={$getItemDataQuery.isLoading}>
     {#if !$getItemDataQuery.isFetching && $getItemDataQuery.isSuccess}
       <div class="stack">
         {#if !$isWideLayout}
