@@ -9,6 +9,7 @@
   import "@material/typography/mdc-typography.scss";
   import { env } from "$env/dynamic/public";
   import { theme } from "$lib/store";
+  import { page } from "$app/stores";
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -47,7 +48,7 @@
 
 <QueryClientProvider client={queryClient}>
   <div class="app">
-    <Drawer />
+    <Drawer currentRoute={$page.route.id ?? ""} />
     <Scrim />
     <AppContent class="app-content">
       <slot />
