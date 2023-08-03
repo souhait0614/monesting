@@ -22,7 +22,6 @@
 
   let openSortItemDialog = false;
 
-  export let disableControlItems = false;
   export let exitedFab = false;
 
   let topAppBar: TopAppBar;
@@ -69,19 +68,17 @@
         }}>menu</IconButton
       >
     </BottomSection>
-    {#if !disableControlItems}
-      <BottomSection fabInset={!exitedFab}>
-        <AddItemFab exited={exitedFab} />
-      </BottomSection>
-      <BottomSection>
-        <IconButton
-          class="material-icons"
-          on:click={() => {
-            openSortItemDialog = true;
-          }}>sort</IconButton
-        >
-      </BottomSection>
-    {/if}
+    <BottomSection fabInset={!exitedFab}>
+      <AddItemFab exited={exitedFab} />
+    </BottomSection>
+    <BottomSection>
+      <IconButton
+        class="material-icons"
+        on:click={() => {
+          openSortItemDialog = true;
+        }}>sort</IconButton
+      >
+    </BottomSection>
   </BottomAppBar>
 {/if}
 
