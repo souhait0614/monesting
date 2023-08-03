@@ -77,3 +77,13 @@ a {
 a:visited {
   color: color.scale(#40b3ff, $lightness: -35%);
 }
+
+.mdc-top-app-bar.home-top-app-bar {
+  // --mdc-theme-secondary: #{theme.$background};
+  // --mdc-theme-on-secondary: #{theme.$on-surface};
+  background-color: theme.$background;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  .mdc-icon-button {
+    color: theme.$on-surface;
+  }
+}

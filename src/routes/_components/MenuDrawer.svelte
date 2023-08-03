@@ -5,26 +5,53 @@
   import { openMenuDrawer } from "$lib/store";
   import { APP_DESCRIPTION, APP_NAME } from "$lib/const";
 
+  const Routes = [
+    {
+      href: "/",
+      icon: "home",
+      label: "ホーム",
+    },
+    {
+      href: "/settings",
+      icon: "settings",
+      label: "設定",
+    },
+    {
+      href: "/about",
+      icon: "help",
+      label: `${APP_NAME}について`,
+    },
+  ] as const satisfies ReadonlyArray<{
+    href: string;
+    icon: string;
+    label: string;
+  }>;
+
+  export let currentRoute: string;
+  export let isWideLayout = false;
+
   const onClose = () => {
     $openMenuDrawer = false;
   };
 </script>
 
-<Drawer variant="modal" bind:open={$openMenuDrawer}>
+<Drawer
+  variant={isWideLayout ? undefined : "modal"}
+  bind:open={$openMenuDrawer}
+  style={isWideLayout ? "height: 100vh; position:sticky; left:0; top: 0;" : undefined}
+>
   <Header>
     <Title>{APP_NAME}</Title>
     <Subtitle>{APP_DESCRIPTION}</Subtitle>
   </Header>
   <Content>
     <List>
-      <Item href="/settings" on:click={() => onClose()}>
-        <Graphic class="material-icons" aria-hidden="true">settings</Graphic>
-        <Text>設定</Text>
-      </Item>
-      <Item href="/about" on:click={() => onClose()}>
-        <Graphic class="material-icons" aria-hidden="true">help</Graphic>
-        <Text>{APP_NAME}について</Text>
-      </Item>
+      {#each Routes as { href, icon, label } (href)}
+        <Item {href} on:click={() => onClose()} activated={href === currentRoute}>
+          <Graphic class="material-icons" aria-hidden="true">{icon}</Graphic>
+          <Text>{label}</Text>
+        </Item>
+      {/each}
     </List>
     <Separator />
     <List>

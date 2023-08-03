@@ -3,7 +3,9 @@ import { writable } from "svelte/store";
 import type { CURRENCY_CODES } from "./currencyCodes";
 import { SORT_BY, SORT_ORDER, THEMES } from "$lib/const";
 
+export const isWideLayout = writable(false);
 export const openMenuDrawer = writable(false);
+export const openAddItemModal = writable(false);
 
 export const theme = persisted<THEMES>("theme", THEMES.dark);
 export const sortBy = persisted<SORT_BY>("sort-by", SORT_BY.date);

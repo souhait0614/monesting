@@ -1,28 +1,27 @@
 <script lang="ts">
   import { initialize } from "svelte-google-auth/client";
-  import SmuiBottomAppBar, { AutoAdjust } from "@smui-extra/bottom-app-bar";
   import { createQuery, useIsMutating } from "@tanstack/svelte-query";
   import CircularProgress from "@smui/circular-progress";
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Button, { Label } from "@smui/button";
   import Snackbar, { Label as SnackbarLabel } from "@smui/snackbar";
   import type { PageData } from "./$types";
-  import BottomAppBar from "./_components/BottomAppBar.svelte";
   import Welcome from "./Welcome.svelte";
   import ItemCard from "./_components/ItemCard.svelte";
+  import EditItemModal from "./_components/EditItemModal.svelte";
+  import HomeAppBarContainer from "./_components/HomeAppBarContainer.svelte";
   import { invalidateAll } from "$app/navigation";
   import { APP_DESCRIPTION, APP_NAME, MUTATION_KEYS, QUERY_KEYS } from "$lib/const";
   import { getItemData } from "$lib/fetch";
   import { browser } from "$app/environment";
   import { sortItems } from "$lib/sortItems";
-  import { sortBy, sortOrder } from "$lib/store";
+  import { isWideLayout, openAddItemModal, sortBy, sortOrder } from "$lib/store";
 
   export let data: PageData;
   $: user = data.auth.user;
   $: isSingedIn = user !== undefined;
   initialize(data, invalidateAll);
 
-  let bottomAppBar: SmuiBottomAppBar;
   let snackbar: Snackbar;
 
   $: getItemDataQuery = createQuery({
@@ -49,17 +48,19 @@
 </svelte:head>
 
 {#if isSingedIn}
-  <AutoAdjust {bottomAppBar}>
-    {#if $getItemDataQuery.isFetching}
-      <div class="loading">
-        <CircularProgress style="height: 40px; width: 40px;" indeterminate />
-      </div>
-    {/if}
+  {#if $getItemDataQuery.isFetching}
+    <div class="loading">
+      <CircularProgress style="height: 40px; width: 40px;" indeterminate />
+    </div>
+  {/if}
+  <HomeAppBarContainer exitedFab={$getItemDataQuery.isLoading} disableControlItems={$getItemDataQuery.isLoading}>
     {#if !$getItemDataQuery.isFetching && $getItemDataQuery.isSuccess}
       <div class="stack">
-        <h1>
-          {APP_NAME}
-        </h1>
+        {#if !$isWideLayout}
+          <h1>
+            {APP_NAME}
+          </h1>
+        {/if}
         {#each sortItems(items, $sortBy, $sortOrder) as item (item.id)}
           <ItemCard {item} />
         {/each}
@@ -86,12 +87,15 @@
     <Snackbar bind:this={snackbar} timeoutMs={-1}>
       <SnackbarLabel>更新中……</SnackbarLabel>
     </Snackbar>
-  </AutoAdjust>
-  <BottomAppBar bind:bottomAppBar exitedFab={$getItemDataQuery.isLoading} />
+  </HomeAppBarContainer>
 {:else}
   <main class="welcome">
     <Welcome />
   </main>
+{/if}
+
+{#if $openAddItemModal}
+  <EditItemModal bind:open={$openAddItemModal} mode="add" />
 {/if}
 
 <style lang="scss">

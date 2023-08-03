@@ -1,12 +1,11 @@
 <script lang="ts">
   import BottomAppBar, { Section } from "@smui-extra/bottom-app-bar";
   import IconButton from "@smui/icon-button";
-  import Fab, { Icon } from "@smui/fab";
   import List, { Graphic, Item, Separator, Text } from "@smui/list";
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Button from "@smui/button/src/Button.svelte";
   import Radio from "@smui/radio";
-  import EditItemModal from "./EditItemModal.svelte";
+  import AddItemFab from "./AddItemFab.svelte";
   import { openMenuDrawer, sortBy, sortOrder } from "$lib/store";
   import { SORT_BY, SORT_ORDER } from "$lib/const";
 
@@ -19,7 +18,6 @@
     desc: "降順",
   } as const satisfies Record<SORT_ORDER, string>;
 
-  let openEditItemModal = false;
   let openSortItemDialog = false;
 
   export let bottomAppBar: BottomAppBar;
@@ -38,16 +36,7 @@
   </Section>
   {#if !disableControlItems}
     <Section fabInset={!exitedFab}>
-      <Fab
-        aria-label="Add"
-        color="primary"
-        exited={exitedFab}
-        on:click={() => {
-          openEditItemModal = true;
-        }}
-      >
-        <Icon class="material-icons">add</Icon>
-      </Fab>
+      <AddItemFab exited={exitedFab} />
     </Section>
     <Section>
       <IconButton
@@ -87,7 +76,3 @@
     <Button>閉じる</Button>
   </Actions>
 </Dialog>
-
-{#if openEditItemModal}
-  <EditItemModal bind:open={openEditItemModal} mode="add" />
-{/if}
