@@ -1,5 +1,6 @@
 import type { ItemDataV2 } from "../types/ItemData";
 import type { ItemV2 } from "../types/ItemV2";
+import { USING_ITEM_DATA_FORMAT_VERSION } from "./const";
 import { getTrueUUID } from "./util";
 
 export const addItem = (item: Omit<ItemV2, "id">, itemData: ItemDataV2) => {
@@ -12,7 +13,7 @@ export const addItem = (item: Omit<ItemV2, "id">, itemData: ItemDataV2) => {
     },
   ];
   const newItemData: ItemDataV2 = {
-    formatVersion: 2,
+    formatVersion: USING_ITEM_DATA_FORMAT_VERSION,
     items: newItems,
   };
   return newItemData;
@@ -25,7 +26,7 @@ export const updateItem = (item: ItemV2, itemData: ItemDataV2) => {
   newItems[index] = item;
 
   const newItemData: ItemDataV2 = {
-    formatVersion: 2,
+    formatVersion: USING_ITEM_DATA_FORMAT_VERSION,
     items: newItems,
   };
   return newItemData;
@@ -34,7 +35,7 @@ export const updateItem = (item: ItemV2, itemData: ItemDataV2) => {
 export const removeItem = (itemId: string, itemData: ItemDataV2) => {
   const newItems: ItemV2[] = [...itemData.items].filter(({ id }) => id !== itemId);
   const newItemData: ItemDataV2 = {
-    formatVersion: 2,
+    formatVersion: USING_ITEM_DATA_FORMAT_VERSION,
     items: newItems,
   };
   return newItemData;
