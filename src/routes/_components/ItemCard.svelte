@@ -35,7 +35,7 @@
       <div>
         <p class="mdc-typography--headline6" style="margin: 0;">{format(nextPaymentDate, "yyyy/MM/dd")}</p>
         <p class="mdc-typography--subtitle2" style="margin: 0; color: #888;">
-          {item.price}
+          {item.price.toLocaleString("ja-JP")}
           {item.currency} / {getFrequencyText(item.frequency)}
         </p>
       </div>
