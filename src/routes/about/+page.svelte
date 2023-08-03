@@ -6,6 +6,7 @@
   import TopAppBar from "../_components/BackHomeAppBar.svelte";
   import { APP_NAME } from "$lib/const";
   import { version } from "$app/environment";
+  import { isWideLayout } from "$lib/store";
 
   let topAppBar: SmuiTopAppBar;
 </script>
@@ -14,7 +15,9 @@
   <title>{APP_NAME}について</title>
 </svelte:head>
 
-<TopAppBar bind:topAppBar title={`${APP_NAME}について`} />
+{#if !$isWideLayout}
+  <TopAppBar bind:topAppBar title={`${APP_NAME}について`} />
+{/if}
 <AutoAdjust {topAppBar}>
   <Group>
     <Subheader>{APP_NAME}</Subheader>

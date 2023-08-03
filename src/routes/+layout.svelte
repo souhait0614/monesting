@@ -4,11 +4,12 @@
   import { pwaInfo } from "virtual:pwa-info";
   import { onMount } from "svelte";
   import Drawer from "./_components/MenuDrawer.svelte";
+  import type { LayoutData } from "./$types";
   import { browser } from "$app/environment";
   import "normalize.css";
   import "@material/typography/mdc-typography.scss";
   import { env } from "$env/dynamic/public";
-  import { theme } from "$lib/store";
+  import { isWideLayout, theme } from "$lib/store";
   import { page } from "$app/stores";
 
   const queryClient = new QueryClient({
@@ -22,7 +23,13 @@
     },
   });
 
+  export let data: LayoutData;
+  $: isSingedIn = data.auth.user !== undefined;
+
   $: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : "";
+
+  let innerWidth: number;
+  $: isWideLayout.set(innerWidth >= 900);
 
   onMount(() => {
     const light = document.getElementById("smui-css-light");
@@ -46,12 +53,27 @@
   {@html webManifestLink}
 </svelte:head>
 
+<svelte:window bind:innerWidth />
+
 <QueryClientProvider client={queryClient}>
   <div class="app">
-    <Drawer currentRoute={$page.route.id ?? ""} />
+    {#if isSingedIn}
+      <Drawer currentRoute={$page.route.id ?? ""} isWideLayout={$isWideLayout} />
+    {/if}
     <Scrim />
     <AppContent class="app-content">
       <slot />
     </AppContent>
   </div>
 </QueryClientProvider>
+
+<style lang="scss">
+  .app {
+    display: flex;
+    grid-template-columns: auto 1fr;
+    position: relative;
+  }
+  :global(.app-content) {
+    width: 100%;
+  }
+</style>

@@ -28,13 +28,18 @@
   }>;
 
   export let currentRoute: string;
+  export let isWideLayout = false;
 
   const onClose = () => {
     $openMenuDrawer = false;
   };
 </script>
 
-<Drawer variant="modal" bind:open={$openMenuDrawer}>
+<Drawer
+  variant={isWideLayout ? undefined : "modal"}
+  bind:open={$openMenuDrawer}
+  style={isWideLayout ? "height: 100vh; position:sticky; left:0; top: 0;" : undefined}
+>
   <Header>
     <Title>{APP_NAME}</Title>
     <Subtitle>{APP_DESCRIPTION}</Subtitle>

@@ -11,7 +11,7 @@
   import Snackbar, { Label as SnackbarLabel, Actions as SnackbarActions } from "@smui/snackbar";
   import IconButton from "@smui/icon-button";
   import TopAppBar from "../_components/BackHomeAppBar.svelte";
-  import { theme, defaultCurrency } from "../../lib/store";
+  import { theme, defaultCurrency, isWideLayout } from "../../lib/store";
   import { isItemData, type ItemData } from "../../types/ItemData";
   import { MUTATION_KEYS, QUERY_KEYS, THEMES } from "$lib/const";
   import { CURRENCY_CODES } from "$lib/currencyCodes";
@@ -65,7 +65,9 @@
   <title>設定</title>
 </svelte:head>
 
-<TopAppBar bind:topAppBar title="設定" />
+{#if !$isWideLayout}
+  <TopAppBar bind:topAppBar title="設定" />
+{/if}
 <AutoAdjust {topAppBar}>
   <Group>
     <Subheader>一般</Subheader>
