@@ -47,7 +47,7 @@
   <meta name="description" content={APP_DESCRIPTION} />
 </svelte:head>
 
-<HomeAppBarContainer exitedFab={$getItemDataQuery.isLoading}>
+<HomeAppBarContainer exitedFab={$getItemDataQuery.isLoading} {showSignedInContent}>
   {#if showSignedInContent}
     {#if $getItemDataQuery.isFetching}
       <div class="loading">

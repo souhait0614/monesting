@@ -71,8 +71,8 @@
         }}>menu</IconButton
       >
     </BottomSection>
-    <BottomSection fabInset={!exitedFab}>
-      <AddItemFab exited={exitedFab} />
+    <BottomSection fabInset={!exitedFab && showSignedInContent}>
+      <AddItemFab exited={exitedFab || !showSignedInContent} />
     </BottomSection>
     <BottomSection>
       {#if showSignedInContent}
