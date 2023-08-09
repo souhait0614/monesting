@@ -29,6 +29,7 @@
 
   export let currentRoute: string;
   export let isWideLayout = false;
+  export let showSignedInContent = false;
 
   const onClose = () => {
     $openMenuDrawer = false;
@@ -53,17 +54,19 @@
         </Item>
       {/each}
     </List>
-    <Separator />
-    <List>
-      <Item
-        on:SMUI:action={() => {
-          signOut();
-          onClose();
-        }}
-      >
-        <Graphic class="material-icons" aria-hidden="true">logout</Graphic>
-        <Text>サインアウト</Text>
-      </Item>
-    </List>
+    {#if showSignedInContent}
+      <Separator />
+      <List>
+        <Item
+          on:SMUI:action={() => {
+            signOut();
+            onClose();
+          }}
+        >
+          <Graphic class="material-icons" aria-hidden="true">logout</Graphic>
+          <Text>サインアウト</Text>
+        </Item>
+      </List>
+    {/if}
   </Content>
 </Drawer>

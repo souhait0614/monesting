@@ -13,10 +13,14 @@
   import TopAppBar from "../_components/BackHomeAppBar.svelte";
   import { theme, defaultCurrency, isWideLayout } from "../../lib/store";
   import { isItemData, type ItemData } from "../../types/ItemData";
+  import type { PageData } from "./$types";
   import { MUTATION_KEYS, QUERY_KEYS, THEMES } from "$lib/const";
   import { CURRENCY_CODES } from "$lib/currencyCodes";
   import { getItemData, setItemData } from "$lib/fetch";
-  import { fileToObject, openFilePicker } from "$lib/util";
+  import { fileToObject, isSignedIn, openFilePicker } from "$lib/util";
+
+  export let data: PageData;
+  $: showSignedInContent = isSignedIn(data);
 
   let topAppBar: SmuiTopAppBar;
   let exportingSnackbar: Snackbar;
@@ -104,7 +108,7 @@
           await $exportMutation.mutateAsync();
           exportingSnackbar.close();
         }}
-        disabled={$exportMutation.isLoading}
+        disabled={$exportMutation.isLoading || !showSignedInContent}
       >
         <Graphic class="material-icons" aria-hidden="true">file_download</Graphic>
         <Text>
@@ -125,7 +129,7 @@
           importItemData = itemData;
           openImportDialog = true;
         }}
-        disabled={$setItemDataMutation.isLoading}
+        disabled={$setItemDataMutation.isLoading || !showSignedInContent}
       >
         <Graphic class="material-icons" aria-hidden="true">file_upload</Graphic>
         <Text>

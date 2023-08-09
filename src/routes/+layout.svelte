@@ -11,6 +11,7 @@
   import { env } from "$env/dynamic/public";
   import { isWideLayout, theme } from "$lib/store";
   import { page } from "$app/stores";
+  import { isSignedIn } from "$lib/util";
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -24,8 +25,7 @@
   });
 
   export let data: LayoutData;
-  $: isSingedIn = data.auth.user !== undefined;
-
+  $: showSignedInContent = isSignedIn(data);
   $: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : "";
 
   let innerWidth: number;
@@ -57,9 +57,7 @@
 
 <QueryClientProvider client={queryClient}>
   <div class="app">
-    {#if isSingedIn}
-      <Drawer currentRoute={$page.route.id ?? ""} isWideLayout={$isWideLayout} />
-    {/if}
+    <Drawer currentRoute={$page.route.id ?? ""} isWideLayout={$isWideLayout} {showSignedInContent} />
     <Scrim />
     <AppContent class="app-content">
       <slot />
