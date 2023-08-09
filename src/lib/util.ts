@@ -1,5 +1,6 @@
 import { differenceInDays, startOfDay } from "date-fns";
 import type { ItemV2 } from "../types/ItemV2";
+import type { LayoutData, PageData } from "../routes/$types";
 
 export const getNextPaymentDate = (
   { start, frequency: { year, month, day } }: Pick<ItemV2, "start" | "frequency">,
@@ -43,3 +44,5 @@ export const fileToObject = (file: File) =>
     reader.addEventListener("error", (e) => reject(e));
     reader.readAsText(file);
   });
+
+export const isSignedIn = (data: LayoutData | PageData) => typeof data.auth.user !== "undefined";

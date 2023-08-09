@@ -23,35 +23,38 @@
   let openSortItemDialog = false;
 
   export let exitedFab = false;
+  export let showSignedInContent = false;
 
   let topAppBar: TopAppBar;
   let bottomAppBar: BottomAppBar;
 </script>
 
 {#if $isWideLayout}
-  <TopAppBar bind:this={topAppBar} variant="fixed" class="home-top-app-bar" style="width: calc(100% - 256px)">
-    <Row>
-      <TopSection>
-        <Button
-          variant="unelevated"
-          on:click={() => {
-            $openAddItemModal = true;
-          }}
-        >
-          <Icon class="material-icons">add</Icon>
-          <Label>追加</Label>
-        </Button>
-      </TopSection>
-      <TopSection align="end" toolbar>
-        <IconButton
-          class="material-icons"
-          on:click={() => {
-            openSortItemDialog = true;
-          }}>sort</IconButton
-        >
-      </TopSection>
-    </Row>
-  </TopAppBar>
+  {#if showSignedInContent}
+    <TopAppBar bind:this={topAppBar} variant="fixed" class="home-top-app-bar" style="width: calc(100% - 256px)">
+      <Row>
+        <TopSection>
+          <Button
+            variant="unelevated"
+            on:click={() => {
+              $openAddItemModal = true;
+            }}
+          >
+            <Icon class="material-icons">add</Icon>
+            <Label>追加</Label>
+          </Button>
+        </TopSection>
+        <TopSection align="end" toolbar>
+          <IconButton
+            class="material-icons"
+            on:click={() => {
+              openSortItemDialog = true;
+            }}>sort</IconButton
+          >
+        </TopSection>
+      </Row>
+    </TopAppBar>
+  {/if}
   <TopAutoAdjust {topAppBar}>
     <slot />
   </TopAutoAdjust>
@@ -72,12 +75,14 @@
       <AddItemFab exited={exitedFab} />
     </BottomSection>
     <BottomSection>
-      <IconButton
-        class="material-icons"
-        on:click={() => {
-          openSortItemDialog = true;
-        }}>sort</IconButton
-      >
+      {#if showSignedInContent}
+        <IconButton
+          class="material-icons"
+          on:click={() => {
+            openSortItemDialog = true;
+          }}>sort</IconButton
+        >
+      {/if}
     </BottomSection>
   </BottomAppBar>
 {/if}

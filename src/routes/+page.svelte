@@ -16,10 +16,10 @@
   import { browser } from "$app/environment";
   import { sortItems } from "$lib/sortItems";
   import { isWideLayout, openAddItemModal, sortBy, sortOrder } from "$lib/store";
+  import { isSignedIn } from "$lib/util";
 
   export let data: PageData;
-  $: user = data.auth.user;
-  $: isSingedIn = user !== undefined;
+  $: showSignedInContent = isSignedIn(data);
   initialize(data, invalidateAll);
 
   let snackbar: Snackbar;
@@ -27,7 +27,7 @@
   $: getItemDataQuery = createQuery({
     queryKey: [QUERY_KEYS.itemData],
     queryFn: getItemData,
-    enabled: browser && isSingedIn,
+    enabled: browser && showSignedInContent,
   });
 
   $: isMutatingSetItemData = useIsMutating([MUTATION_KEYS.itemData]);
@@ -47,13 +47,13 @@
   <meta name="description" content={APP_DESCRIPTION} />
 </svelte:head>
 
-{#if isSingedIn}
-  {#if $getItemDataQuery.isFetching}
-    <div class="loading">
-      <CircularProgress style="height: 40px; width: 40px;" indeterminate />
-    </div>
-  {/if}
-  <HomeAppBarContainer exitedFab={$getItemDataQuery.isLoading}>
+<HomeAppBarContainer exitedFab={$getItemDataQuery.isLoading}>
+  {#if showSignedInContent}
+    {#if $getItemDataQuery.isFetching}
+      <div class="loading">
+        <CircularProgress style="height: 40px; width: 40px;" indeterminate />
+      </div>
+    {/if}
     {#if !$getItemDataQuery.isFetching && $getItemDataQuery.isSuccess}
       <div class="stack">
         {#if !$isWideLayout}
@@ -87,12 +87,12 @@
     <Snackbar bind:this={snackbar} timeoutMs={-1}>
       <SnackbarLabel>更新中……</SnackbarLabel>
     </Snackbar>
-  </HomeAppBarContainer>
-{:else}
-  <main class="welcome">
-    <Welcome />
-  </main>
-{/if}
+  {:else}
+    <div class="welcome">
+      <Welcome />
+    </div>
+  {/if}
+</HomeAppBarContainer>
 
 {#if $openAddItemModal}
   <EditItemModal bind:open={$openAddItemModal} mode="add" />
@@ -100,6 +100,8 @@
 
 <style lang="scss">
   .welcome {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100vh;
     height: 100lvh;
