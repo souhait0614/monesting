@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "types": ["serviceworker", "@sveltejs/kit"]
+  },
+  "include": ["src/service-worker"]
+}
