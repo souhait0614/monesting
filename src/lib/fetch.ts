@@ -1,6 +1,6 @@
 import type { PushSubscription } from "web-push";
 import { isItemDataV2, type ItemData } from "../types/ItemData";
-import { upgradeFormat } from "./upgradeFormat";
+import { upgradeItemData } from "./upgradeItemData";
 
 export const getItemData = async () => {
   const res = await fetch("/api/items");
@@ -12,7 +12,7 @@ export const getItemData = async () => {
 export const setItemData = async (itemData: ItemData) => {
   const res = await fetch("/api/items", {
     method: "POST",
-    body: JSON.stringify(upgradeFormat(itemData)),
+    body: JSON.stringify(upgradeItemData(itemData)),
   });
   if (!res.ok) throw new Error(res.statusText);
 };

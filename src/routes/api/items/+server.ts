@@ -7,7 +7,7 @@ import { isObject } from "../../../types/typeGuard";
 import type { ItemData } from "../../../types/ItemData";
 import type { RequestHandler } from "./$types";
 import { INITIAL_ITEM_DATA, ITEM_DATA_FILE_NAME, USING_ITEM_DATA_FORMAT_VERSION } from "$lib/const";
-import { upgradeFormat } from "$lib/upgradeFormat";
+import { upgradeItemData } from "$lib/upgradeItemData";
 
 const ITEM_DATA_FILE_ID = "item_data_file_id";
 
@@ -47,7 +47,7 @@ const returnItemData = async (id: string, cookies: Cookies, drive: drive_v3.Driv
 
     const itemData = data as ItemData;
     if (itemData.formatVersion < USING_ITEM_DATA_FORMAT_VERSION) {
-      const upgradedItemData = upgradeFormat(itemData);
+      const upgradedItemData = upgradeItemData(itemData);
       await drive.files.update({
         fileId: id,
         media: {
