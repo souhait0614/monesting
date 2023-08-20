@@ -6,6 +6,12 @@ export interface FrequencyV1 {
   day: number;
 }
 
+export const isFrequencyV1 = (val: unknown): val is FrequencyV1 =>
+  isObject<FrequencyV1>(val) &&
+  typeof val.year === "number" &&
+  typeof val.month === "number" &&
+  typeof val.day === "number";
+
 export interface ItemV1 {
   id: string;
   label: string;
@@ -24,7 +30,4 @@ export const isItemV1 = (val: unknown): val is ItemV1 =>
   typeof val.price === "number" &&
   typeof val.currency === "string" &&
   typeof val.start === "string" &&
-  isObject<FrequencyV1>(val.frequency) &&
-  typeof val.frequency.year === "number" &&
-  typeof val.frequency.month === "number" &&
-  typeof val.frequency.day === "number";
+  isFrequencyV1(val.frequency);
