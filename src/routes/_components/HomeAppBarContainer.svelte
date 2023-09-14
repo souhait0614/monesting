@@ -6,8 +6,9 @@
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Button from "@smui/button/src/Button.svelte";
   import Radio from "@smui/radio";
+  import Badge from "@smui-extra/badge";
   import AddItemFab from "./AddItemFab.svelte";
-  import { isWideLayout, openAddItemModal } from "$lib/store";
+  import { isWideLayout, notificationNotUpdated, openAddItemModal } from "$lib/store";
   import { openMenuDrawer, sortBy, sortOrder } from "$lib/store";
   import { SORT_BY, SORT_ORDER } from "$lib/const";
 
@@ -65,11 +66,19 @@
   <BottomAppBar bind:this={bottomAppBar} color="secondary" variant="fixed">
     <BottomSection>
       <IconButton
-        class="material-icons"
         on:click={() => {
           $openMenuDrawer = true;
-        }}>menu</IconButton
+        }}
       >
+        <Icon class="material-icons">menu</Icon>
+        {#if $notificationNotUpdated}
+          <Badge
+            position="inset"
+            aria-label="unread content is available"
+            style="min-height: 10px; min-width: 10px; padding: 0;"
+          />
+        {/if}
+      </IconButton>
     </BottomSection>
     <BottomSection fabInset={!exitedFab && showSignedInContent}>
       <AddItemFab exited={exitedFab || !showSignedInContent} />

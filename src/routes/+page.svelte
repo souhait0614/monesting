@@ -4,7 +4,6 @@
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Button, { Label } from "@smui/button";
   import Snackbar, { Label as SnackbarLabel } from "@smui/snackbar";
-  import equal from "fast-deep-equal";
   import type { PageData } from "./$types";
   import Welcome from "./Welcome.svelte";
   import ItemCard from "./_components/ItemCard.svelte";
@@ -24,7 +23,7 @@
     sortBy,
     sortOrder,
   } from "$lib/store";
-  import { isSignedIn, itemToNotification } from "$lib/util";
+  import { equalNotificationsFromItems, isSignedIn } from "$lib/util";
 
   export let data: PageData;
   $: showSignedInContent = isSignedIn(data);
@@ -51,8 +50,7 @@
 
   $: {
     if ($getItemDataQuery.isFetched) {
-      const notifications = items.map((item) => itemToNotification(item));
-      $notificationNotUpdated = !equal(notifications, $remoteNotifications);
+      $notificationNotUpdated = !equalNotificationsFromItems(items, $remoteNotifications, $sortBy, $sortOrder);
     }
   }
 </script>
