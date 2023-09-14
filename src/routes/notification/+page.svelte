@@ -8,6 +8,7 @@
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Snackbar, { Label as SnackbarLabel } from "@smui/snackbar";
   import equal from "fast-deep-equal";
+  import Fab from "@smui/fab";
   import NotificationCard from "../_components/NotificationCard.svelte";
   import BackHomeAppBar from "../_components/BackHomeAppBar.svelte";
   import ResponsiveAutoAdjust from "../_components/ResponsiveAutoAdjust.svelte";
@@ -135,6 +136,16 @@
           <NotificationCard {item} />
         {/each}
       </div>
+      <div class="fav-container">
+        <Fab
+          aria-label="Upload"
+          color="primary"
+          exited={!$notificationNotUpdated || $setNotificationDataMutation.isLoading}
+          on:click={() => handleApply()}
+        >
+          <Icon class="material-icons">upload</Icon>
+        </Fab>
+      </div>
     {/if}
     <Snackbar bind:this={updateItemDataSnackbar} timeoutMs={-1}>
       <SnackbarLabel>更新中……</SnackbarLabel>
@@ -194,5 +205,14 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+  .fav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 </style>
