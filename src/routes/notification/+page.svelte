@@ -136,16 +136,18 @@
           <NotificationCard {item} />
         {/each}
       </div>
-      <div class="fav-container">
-        <Fab
-          aria-label="Upload"
-          color="primary"
-          exited={!$notificationNotUpdated || $setNotificationDataMutation.isLoading}
-          on:click={() => handleApply()}
-        >
-          <Icon class="material-icons">upload</Icon>
-        </Fab>
-      </div>
+      {#if !$isWideLayout}
+        <div class="fav-container">
+          <Fab
+            aria-label="Upload"
+            color="primary"
+            exited={!$notificationNotUpdated || $setNotificationDataMutation.isLoading}
+            on:click={() => handleApply()}
+          >
+            <Icon class="material-icons">upload</Icon>
+          </Fab>
+        </div>
+      {/if}
     {/if}
     <Snackbar bind:this={updateItemDataSnackbar} timeoutMs={-1}>
       <SnackbarLabel>更新中……</SnackbarLabel>
