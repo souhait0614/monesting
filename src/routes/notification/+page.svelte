@@ -7,7 +7,6 @@
   import List, { Item as ListItem } from "@smui/list";
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Snackbar, { Label as SnackbarLabel } from "@smui/snackbar";
-  import equal from "fast-deep-equal";
   import Fab from "@smui/fab";
   import NotificationCard from "../_components/NotificationCard.svelte";
   import BackHomeAppBar from "../_components/BackHomeAppBar.svelte";
@@ -20,7 +19,7 @@
   import { getItemData, setNotificationData } from "$lib/fetch";
   import { browser } from "$app/environment";
   import { MUTATION_KEYS, QUERY_KEYS } from "$lib/const";
-  import { isSignedIn, itemToNotification } from "$lib/util";
+  import { equalNotificationsFromItems, isSignedIn, itemToNotification } from "$lib/util";
   import {
     isWideLayout,
     notificationNotUpdated,
@@ -74,8 +73,7 @@
     if ($getItemDataQuery.isFetched) {
       const itemData = $getItemDataQuery.data;
       if (!itemData) throw new Error("No Items");
-      const notifications = itemData.items.map((item) => itemToNotification(item));
-      $notificationNotUpdated = !equal(notifications, $remoteNotifications);
+      $notificationNotUpdated = !equalNotificationsFromItems(itemData.items, $remoteNotifications, $sortBy, $sortOrder);
     }
   }
 

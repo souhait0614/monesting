@@ -1,7 +1,10 @@
 import { differenceInDays, startOfDay } from "date-fns";
+import equal from "fast-deep-equal";
 import type { ItemV3 } from "../types/ItemV3";
 import type { LayoutData, PageData } from "../routes/$types";
 import type { NotificationV1 } from "../types/NotificationV1";
+import { sortItems } from "./sortItems";
+import type { SORT_BY, SORT_ORDER } from "./const";
 
 export const getNextPaymentDate = (
   { start, frequency: { year, month, day } }: Pick<ItemV3, "start" | "frequency">,
@@ -65,3 +68,13 @@ export const itemToNotification = ({
   frequency,
   send: sendNotification,
 });
+
+export const equalNotificationsFromItems = (
+  items: ItemV3[],
+  notifications: NotificationV1[],
+  sortBy: SORT_BY,
+  sortOrder: SORT_ORDER
+) => {
+  const itemNotifications = items.map((item) => itemToNotification(item));
+  return equal(sortItems(itemNotifications, sortBy, sortOrder), sortItems(notifications, sortBy, sortOrder));
+};
