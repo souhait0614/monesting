@@ -9,18 +9,18 @@
   import Menu from "@smui/menu";
   import List, { Item as ListItem } from "@smui/list";
   import { match } from "ts-pattern";
-  import { isItemDataV2 } from "../../types/ItemData";
-  import { type ItemV2, isItemV2 } from "../../types/ItemV2";
+  import { isItemDataV3 } from "../../types/ItemData";
+  import { type ItemV3, isItemV3 } from "../../types/ItemV3";
   import { CURRENCY_CODES } from "$lib/currencyCodes";
   import { MUTATION_KEYS, QUERY_KEYS } from "$lib/const";
   import { addItem, updateItem, removeItem } from "$lib/item";
   import { setItemData } from "$lib/fetch";
-  import { defaultCurrency } from "$lib/store";
+  import { defaultCurrency, notificationNotUpdated } from "$lib/store";
 
   export let open = false;
   export let mode: "add" | "update";
 
-  export let defaultValue: ItemV2 | undefined = undefined;
+  export let defaultValue: ItemV3 | undefined = undefined;
 
   const text = {
     title: {
@@ -42,6 +42,7 @@
   let frequencyMonthValue: number | null = defaultValue?.frequency.month ?? 0;
   let frequencyDayValue: number | null = defaultValue?.frequency.day ?? 0;
   let noteValue: string | null = defaultValue?.note ?? null;
+  let sendNotificationValue: number | false = defaultValue?.sendNotification ?? false;
 
   $: tempItem = {
     id: defaultValue?.id ?? "",
@@ -56,7 +57,8 @@
       day: frequencyDayValue ?? 0,
     },
     note: noteValue ?? "",
-  } satisfies ItemV2;
+    sendNotification: sendNotificationValue,
+  } satisfies ItemV3;
 
   $: disableApplyButton =
     labelValue === null ||
@@ -190,13 +192,14 @@
     <Button
       on:click={async () => {
         const itemData = queryClient.getQueryData([QUERY_KEYS.itemData]);
-        if (!isItemV2(tempItem) || !isItemDataV2(itemData)) throw new Error("えらー");
+        if (!isItemV3(tempItem) || !isItemDataV3(itemData)) throw new Error("えらー");
         const newItemData = match(mode)
           .with("add", () => addItem(tempItem, itemData))
           .with("update", () => updateItem(tempItem, itemData))
           .exhaustive();
         queryClient.setQueryData([QUERY_KEYS.itemData], newItemData);
-        $setItemDataMutation.mutate(newItemData);
+        await $setItemDataMutation.mutateAsync(newItemData);
+        $notificationNotUpdated = true;
       }}
       action="apply"
       disabled={disableApplyButton || Boolean($isMutatingSetItemData)}
@@ -219,7 +222,7 @@
       on:click={async () => {
         open = false;
         const itemData = queryClient.getQueryData([QUERY_KEYS.itemData]);
-        if (!tempItem.id || !isItemDataV2(itemData)) throw new Error("えらー");
+        if (!tempItem.id || !isItemDataV3(itemData)) throw new Error("えらー");
         const newItemData = removeItem(tempItem.id, itemData);
         queryClient.setQueryData([QUERY_KEYS.itemData], newItemData);
         $setItemDataMutation.mutate(newItemData);

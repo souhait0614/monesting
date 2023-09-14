@@ -3,15 +3,18 @@
   import { AppContent, Scrim } from "@smui/drawer";
   import { pwaInfo } from "virtual:pwa-info";
   import { onMount } from "svelte";
+  import { match } from "ts-pattern";
   import Drawer from "./_components/MenuDrawer.svelte";
   import type { LayoutData } from "./$types";
   import { browser } from "$app/environment";
   import "normalize.css";
   import "@material/typography/mdc-typography.scss";
   import { env } from "$env/dynamic/public";
-  import { isWideLayout, theme } from "$lib/store";
+  import { isWideLayout, notificationPermission, remoteNotifications, theme } from "$lib/store";
   import { page } from "$app/stores";
   import { isSignedIn } from "$lib/util";
+  import { getIsSubscribeNotification } from "$lib/notification";
+  import { getNotificationData } from "$lib/fetch";
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -31,7 +34,8 @@
   let innerWidth: number;
   $: isWideLayout.set(innerWidth >= 900);
 
-  onMount(() => {
+  onMount(async () => {
+    // Theme
     const light = document.getElementById("smui-css-light");
     const dark = document.getElementById("smui-css-dark");
     theme.subscribe((val) => {
@@ -43,6 +47,16 @@
         light?.setAttribute("media", "print");
       }
     });
+
+    // Notification
+    $notificationPermission = await match(Notification.permission)
+      .with("granted", async () => {
+        const res = await getIsSubscribeNotification();
+        return res ? "granted" : "default";
+      })
+      .otherwise(() => Promise.resolve(Notification.permission));
+
+    $remoteNotifications = (await getNotificationData()).notifications ?? [];
   });
 </script>
 

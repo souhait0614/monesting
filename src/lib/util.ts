@@ -1,9 +1,10 @@
 import { differenceInDays, startOfDay } from "date-fns";
-import type { ItemV2 } from "../types/ItemV2";
+import type { ItemV3 } from "../types/ItemV3";
 import type { LayoutData, PageData } from "../routes/$types";
+import type { NotificationV1 } from "../types/NotificationV1";
 
 export const getNextPaymentDate = (
-  { start, frequency: { year, month, day } }: Pick<ItemV2, "start" | "frequency">,
+  { start, frequency: { year, month, day } }: Pick<ItemV3, "start" | "frequency">,
   now: Date
 ) => {
   if (year <= 0 && month <= 0 && day <= 0) throw new Error("invalid frequency values");
@@ -16,7 +17,7 @@ export const getNextPaymentDate = (
   return date;
 };
 
-export const getTrueUUID = (items: ItemV2[]) => {
+export const getTrueUUID = (items: ItemV3[]) => {
   let uuid = crypto.randomUUID();
   while (items.find(({ id }) => id === uuid)) {
     uuid = crypto.randomUUID();
@@ -46,3 +47,21 @@ export const fileToObject = (file: File) =>
   });
 
 export const isSignedIn = (data: LayoutData | PageData) => typeof data.auth.user !== "undefined";
+
+export const itemToNotification = ({
+  id,
+  label,
+  price,
+  currency,
+  start,
+  frequency,
+  sendNotification,
+}: ItemV3): NotificationV1 => ({
+  id,
+  label,
+  price,
+  currency,
+  start,
+  frequency,
+  send: sendNotification,
+});
