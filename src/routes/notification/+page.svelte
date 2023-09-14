@@ -7,7 +7,7 @@
   import List, { Item as ListItem } from "@smui/list";
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Snackbar, { Label as SnackbarLabel } from "@smui/snackbar";
-  import Fab from "@smui/fab";
+  import Banner from "@smui/banner";
   import NotificationCard from "../_components/NotificationCard.svelte";
   import BackHomeAppBar from "../_components/BackHomeAppBar.svelte";
   import ResponsiveAutoAdjust from "../_components/ResponsiveAutoAdjust.svelte";
@@ -107,16 +107,6 @@
 {:else if $notificationPermission === "granted"}
   <TopAppBar bind:this={wideLayoutTopAppBar} variant="fixed" class="home-top-app-bar" style="width: calc(100% - 256px)">
     <Row>
-      <Section align="start" toolbar>
-        <Button
-          variant="unelevated"
-          disabled={!$notificationNotUpdated || $setNotificationDataMutation.isLoading}
-          on:click={() => handleApply()}
-        >
-          <Icon class="material-icons">upload</Icon>
-          <Label>通知設定を反映</Label>
-        </Button>
-      </Section>
       <Section align="end" toolbar>
         <IconButton class="material-icons" on:click={() => moreMenu.setOpen(true)}>more_vert</IconButton>
       </Section>
@@ -124,6 +114,16 @@
   </TopAppBar>
 {/if}
 <ResponsiveAutoAdjust {wideLayoutTopAppBar} {narrowLayoutTopAppBar}>
+  <Banner open={$notificationNotUpdated} centered autoClose={false}>
+    <Icon slot="icon" class="material-icons">priority_high</Icon>
+    <Label slot="label">通知設定が変更されました。現在の設定で通知を受け取るために設定を反映してください。</Label>
+    <svelte:fragment slot="actions">
+      <Button variant="outlined" disabled={$setNotificationDataMutation.isLoading} on:click={() => handleApply()}>
+        <Icon class="material-icons">upload</Icon>
+        <Label>通知設定を反映</Label>
+      </Button>
+    </svelte:fragment>
+  </Banner>
   {#if $notificationPermission === "granted"}
     {#if $getItemDataQuery.isFetching}
       <Loading />
@@ -134,18 +134,6 @@
           <NotificationCard {item} />
         {/each}
       </div>
-      {#if !$isWideLayout}
-        <div class="fav-container">
-          <Fab
-            aria-label="Upload"
-            color="primary"
-            exited={!$notificationNotUpdated || $setNotificationDataMutation.isLoading}
-            on:click={() => handleApply()}
-          >
-            <Icon class="material-icons">upload</Icon>
-          </Fab>
-        </div>
-      {/if}
     {/if}
     <Snackbar bind:this={updateItemDataSnackbar} timeoutMs={-1}>
       <SnackbarLabel>更新中……</SnackbarLabel>
@@ -205,14 +193,5 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  .fav-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
   }
 </style>

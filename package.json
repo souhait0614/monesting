@@ -23,6 +23,7 @@
     "@smui-extra/autocomplete": "^7.0.0-beta.15",
     "@smui-extra/badge": "^7.0.0-beta.15",
     "@smui-extra/bottom-app-bar": "^7.0.0-beta.15",
+    "@smui/banner": "^7.0.0-beta.15",
     "@smui/button": "7.0.0-beta.15",
     "@smui/card": "^7.0.0-beta.15",
     "@smui/circular-progress": "^7.0.0-beta.15",
