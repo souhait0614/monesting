@@ -1,10 +1,11 @@
+import type { PushMessage } from "../types/Util";
+
 self.addEventListener("push", (evt: PushEvent) => {
-  const data = evt.data.text();
-  console.log(data);
+  const data: PushMessage = evt.data.json();
   const options = {
-    body: data,
+    body: data.body,
   } as const satisfies NotificationOptions;
-  evt.waitUntil(self.registration.showNotification("テスト", options));
+  evt.waitUntil(self.registration.showNotification(data.title, options));
 });
 self.addEventListener("notificationclick", (evt: NotificationEvent) => {
   evt.notification.close();

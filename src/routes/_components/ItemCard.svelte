@@ -1,11 +1,11 @@
 <script lang="ts">
   import Card, { PrimaryAction } from "@smui/card";
   import { format } from "date-fns";
-  import type { FrequencyV2, ItemV2 } from "../../types/ItemV2";
+  import type { FrequencyV3, ItemV3 } from "../../types/ItemV3";
   import EditItemModal from "./EditItemModal.svelte";
   import { getNextPaymentDate } from "$lib/util";
 
-  const getFrequencyText = ({ year, month, day }: FrequencyV2) => {
+  const getFrequencyText = ({ year, month, day }: FrequencyV3) => {
     let text = "";
     if (year) text += `${year}年`;
     if (month) text += `${month}月`;
@@ -13,7 +13,7 @@
     return text;
   };
 
-  export let item: ItemV2;
+  export let item: ItemV3;
 
   let openEditItemModal = false;
 

@@ -5,5 +5,5 @@
     "target": "ESNext",
     "types": ["serviceworker", "@sveltejs/kit"]
   },
-  "include": ["src/service-worker"]
+  "include": ["src/service-worker", "src/types"]
 }

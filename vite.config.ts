@@ -6,6 +6,9 @@ import { APP_DESCRIPTION, APP_NAME } from "./src/lib/const";
 export default defineConfig(({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   return {
+    server: {
+      host: true,
+    },
     plugins: [
       sveltekit(),
       SvelteKitPWA({

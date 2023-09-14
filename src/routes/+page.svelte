@@ -1,22 +1,30 @@
 <script lang="ts">
   import { initialize } from "svelte-google-auth/client";
   import { createQuery, useIsMutating } from "@tanstack/svelte-query";
-  import CircularProgress from "@smui/circular-progress";
   import Dialog, { Actions, Content, Title } from "@smui/dialog";
   import Button, { Label } from "@smui/button";
   import Snackbar, { Label as SnackbarLabel } from "@smui/snackbar";
+  import equal from "fast-deep-equal";
   import type { PageData } from "./$types";
   import Welcome from "./Welcome.svelte";
   import ItemCard from "./_components/ItemCard.svelte";
   import EditItemModal from "./_components/EditItemModal.svelte";
   import HomeAppBarContainer from "./_components/HomeAppBarContainer.svelte";
+  import Loading from "./_components/Loading.svelte";
   import { invalidateAll } from "$app/navigation";
   import { APP_DESCRIPTION, APP_NAME, MUTATION_KEYS, QUERY_KEYS } from "$lib/const";
   import { getItemData } from "$lib/fetch";
   import { browser } from "$app/environment";
   import { sortItems } from "$lib/sortItems";
-  import { isWideLayout, openAddItemModal, sortBy, sortOrder } from "$lib/store";
-  import { isSignedIn } from "$lib/util";
+  import {
+    isWideLayout,
+    notificationNotUpdated,
+    openAddItemModal,
+    remoteNotifications,
+    sortBy,
+    sortOrder,
+  } from "$lib/store";
+  import { isSignedIn, itemToNotification } from "$lib/util";
 
   export let data: PageData;
   $: showSignedInContent = isSignedIn(data);
@@ -40,6 +48,13 @@
       else snackbar.close();
     }
   }
+
+  $: {
+    if ($getItemDataQuery.isFetched) {
+      const notifications = items.map((item) => itemToNotification(item));
+      $notificationNotUpdated = !equal(notifications, $remoteNotifications);
+    }
+  }
 </script>
 
 <svelte:head>
@@ -50,9 +65,7 @@
 <HomeAppBarContainer exitedFab={$getItemDataQuery.isLoading} {showSignedInContent}>
   {#if showSignedInContent}
     {#if $getItemDataQuery.isFetching}
-      <div class="loading">
-        <CircularProgress style="height: 40px; width: 40px;" indeterminate />
-      </div>
+      <Loading />
     {/if}
     {#if !$getItemDataQuery.isFetching && $getItemDataQuery.isSuccess}
       <div class="stack">
@@ -105,17 +118,6 @@
     width: 100%;
     height: 100vh;
     height: 100lvh;
-  }
-  .loading {
-    width: 100%;
-    height: 100vh;
-    height: 100lvh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
   .stack {
     padding: 1rem;
