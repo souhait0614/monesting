@@ -35,12 +35,12 @@
 
   let labelValue: string | null = defaultValue?.label ?? null;
   let fromValue: string | null = defaultValue?.from ?? null;
-  let priceValue: number | null = defaultValue?.price ?? null;
+  let priceValue: number = defaultValue?.price ?? NaN;
   let currencyValue: string | null = defaultValue?.currency ?? $defaultCurrency;
-  let startValue: string | null = format(defaultValue?.start ? new Date(defaultValue.start) : new Date(), "yyyy-MM-dd");
-  let frequencyYearValue: number | null = defaultValue?.frequency.year ?? 0;
-  let frequencyMonthValue: number | null = defaultValue?.frequency.month ?? 0;
-  let frequencyDayValue: number | null = defaultValue?.frequency.day ?? 0;
+  let startValue: string = format(defaultValue?.start ? new Date(defaultValue.start) : new Date(), "yyyy-MM-dd");
+  let frequencyYearValue: number = defaultValue?.frequency.year ?? 0;
+  let frequencyMonthValue: number = defaultValue?.frequency.month ?? 0;
+  let frequencyDayValue: number = defaultValue?.frequency.day ?? 0;
   let noteValue: string | null = defaultValue?.note ?? null;
   let sendNotificationValue: number | false = defaultValue?.sendNotification ?? false;
 
@@ -61,14 +61,14 @@
   } satisfies ItemV3;
 
   $: disableApplyButton =
-    labelValue === null ||
-    fromValue === null ||
-    priceValue === null ||
-    currencyValue === null ||
-    startValue === null ||
-    frequencyYearValue === null ||
-    frequencyMonthValue === null ||
-    frequencyDayValue === null ||
+    labelValue === "" ||
+    fromValue === "" ||
+    isNaN(priceValue) ||
+    currencyValue === "" ||
+    startValue === "" ||
+    isNaN(frequencyYearValue) ||
+    isNaN(frequencyMonthValue) ||
+    isNaN(frequencyDayValue) ||
     Number.isNaN(new Date(startValue).getTime()) ||
     frequencyYearValue + frequencyMonthValue + frequencyDayValue <= 0;
 
