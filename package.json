@@ -76,8 +76,8 @@
     "svelte-google-auth": "^0.7.2",
     "svelte-local-storage-store": "^0.6.0",
     "ts-pattern": "^5.0.5",
+    "tslog": "^4.9.2",
     "vite-plugin-pwa": "^0.16.5",
-    "web-push": "^3.6.5",
-    "winston": "^3.10.0"
+    "web-push": "^3.6.5"
   }
 }
