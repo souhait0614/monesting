@@ -1,6 +1,6 @@
 {
   "name": "monesting",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "license": "MIT",
   "engines": {
     "node": "18.x"
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@material/theme": "^14.0.0",
     "@material/typography": "^14.0.0",
+    "@smui-extra/accordion": "^7.0.0-beta.15",
     "@smui-extra/autocomplete": "^7.0.0-beta.15",
     "@smui-extra/badge": "^7.0.0-beta.15",
     "@smui-extra/bottom-app-bar": "^7.0.0-beta.15",
@@ -70,7 +71,7 @@
     "date-fns": "^2.30.0",
     "fast-deep-equal": "^3.1.3",
     "google-auth-library": "^9.0.0",
-    "googleapis": "^126.0.1",
+    "googleapis": "^123.0.0",
     "normalize.css": "^8.0.1",
     "svelte-google-auth": "^0.7.2",
     "svelte-local-storage-store": "^0.6.0",
