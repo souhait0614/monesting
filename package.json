@@ -20,6 +20,7 @@
   "devDependencies": {
     "@material/theme": "^14.0.0",
     "@material/typography": "^14.0.0",
+    "@smui-extra/accordion": "^7.0.0-beta.15",
     "@smui-extra/autocomplete": "^7.0.0-beta.15",
     "@smui-extra/badge": "^7.0.0-beta.15",
     "@smui-extra/bottom-app-bar": "^7.0.0-beta.15",

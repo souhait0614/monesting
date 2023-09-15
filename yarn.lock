@@ -1686,6 +1686,22 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@smui-extra/accordion@^7.0.0-beta.15":
+  version "7.0.0-beta.15"
+  resolved "https://registry.yarnpkg.com/@smui-extra/accordion/-/accordion-7.0.0-beta.15.tgz#e6743189452068051f30f484a35d9fb40fa0169b"
+  integrity sha512-/T5RX6akQRCuo82YMLr3VbmVOdnzO+Vn0zy0PWIOB8YqiSf6ny5T4cY3lENwN9hrAeA5JuMQ8mQbyoa2KWMgbw==
+  dependencies:
+    "@material/animation" "^14.0.0"
+    "@material/elevation" "^14.0.0"
+    "@material/feature-targeting" "^14.0.0"
+    "@material/ripple" "^14.0.0"
+    "@material/theme" "^14.0.0"
+    "@material/typography" "^14.0.0"
+    "@smui/common" "^7.0.0-beta.15"
+    "@smui/paper" "^7.0.0-beta.15"
+    "@smui/ripple" "^7.0.0-beta.15"
+    svelte2tsx "^0.6.21"
+
 "@smui-extra/autocomplete@^7.0.0-beta.15":
   version "7.0.0-beta.15"
   resolved "https://registry.yarnpkg.com/@smui-extra/autocomplete/-/autocomplete-7.0.0-beta.15.tgz#8558880ab6eb3e4845da01a803c56171b6515b04"

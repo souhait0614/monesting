@@ -30,6 +30,7 @@
   initialize(data, invalidateAll);
 
   let snackbar: Snackbar;
+  let openErrorDetailDialog = false;
 
   $: getItemDataQuery = createQuery({
     queryKey: [QUERY_KEYS.itemData],
@@ -83,6 +84,12 @@
         <Content id="error-message">
           <p>リロードしても解決しない場合、Cookieを削除してください。</p>
           <p>{String($getItemDataQuery.error)}</p>
+          <Button
+            variant="outlined"
+            on:click={() => {
+              openErrorDetailDialog = true;
+            }}>エラー詳細を表示</Button
+          >
         </Content>
         <Actions>
           <Button
@@ -92,6 +99,19 @@
           >
             <Label>リロード</Label>
           </Button>
+        </Actions>
+      </Dialog>
+      <Dialog bind:open={openErrorDetailDialog} aria-labelledby="error-detail" aria-describedby="error-detail">
+        <Title id="error">エラー詳細</Title>
+        <Content id="error-message">
+          <pre>
+            {#if $getItemDataQuery.error instanceof Error}
+              {$getItemDataQuery.error.stack}
+            {/if}
+          </pre>
+        </Content>
+        <Actions>
+          <Button>閉じる</Button>
         </Actions>
       </Dialog>
     {/if}
