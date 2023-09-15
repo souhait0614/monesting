@@ -1,5 +1,5 @@
 import type { PushSubscription } from "web-push";
-import { isItemDataV3, type ItemData } from "../types/ItemData";
+import { isItemData, type ItemData } from "../types/ItemData";
 import type { NotificationData, NotificationDataV1 } from "../types/NotificationData";
 import { upgradeItemData } from "./upgradeItemData";
 import { upgradeNotificationData } from "./upgradeNotificationData";
@@ -8,7 +8,7 @@ export const getItemData = async () => {
   const res = await fetch("/api/items");
   if (!res.ok) throw new Error(res.statusText);
   const data: unknown = await res.json();
-  if (isItemDataV3(data)) return data;
+  if (isItemData(data)) return upgradeItemData(data);
   else throw new Error("Invalid Format");
 };
 export const setItemData = async (itemData: ItemData) => {

@@ -28,5 +28,5 @@ export const upgradeItemData = (itemData: ItemData) => {
       .with({ formatVersion: 3 }, (data) => data)
       .exhaustive();
   }
-  return tempItemData as ItemDataV2;
+  return tempItemData as ItemDataV3;
 };
