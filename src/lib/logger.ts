@@ -1,17 +1,9 @@
-import * as winston from "winston";
+import { Logger } from "tslog";
 import { PUBLIC_LOG_LEVEL } from "$env/static/public";
 
-const log_level = ["debug", "info", "warn", "error"];
+const log_level = ["silly", "trace", "debug", "info", "warn", "error", "fatal"];
 
 if (!log_level.includes(PUBLIC_LOG_LEVEL))
-  throw new Error(`For ${PUBLIC_LOG_LEVEL}, specify one of "debug", "info", "warn", or "error".`);
+  throw new Error(`For ${PUBLIC_LOG_LEVEL}, specify one of ${log_level.join()}.`);
 
-export const logger = winston.createLogger({
-  level: PUBLIC_LOG_LEVEL,
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.cli(),
-    winston.format.printf((info) => `[${info.timestamp}] ${info.level} ${info.message}`)
-  ),
-  transports: [new winston.transports.Console()],
-});
+export const logger = new Logger();
