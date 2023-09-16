@@ -45,9 +45,9 @@ const getPushMessage = ({ label, price, currency }: NotificationV1, nextPaymentD
 };
 
 export const POST: RequestHandler = async ({ request }) => {
-  const token = request.headers.get("authorization");
-  logger.debug("token", token);
-  if (!token || !RegExp(`${CRON_SECRET}$`).test(token)) throw error(401);
+  const authorization = request.headers.get("authorization");
+  logger.debug("token", authorization);
+  if (!authorization || authorization.split(" ")[1] !== CRON_SECRET) throw error(401);
 
   const now = startOfToday();
   logger.debug("now", now);
