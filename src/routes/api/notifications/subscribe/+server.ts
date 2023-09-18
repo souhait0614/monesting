@@ -3,21 +3,21 @@ import { isSignedIn } from "svelte-google-auth";
 import type { PushSubscription } from "web-push";
 import { isPushSubscription } from "../../../../types/typeGuard";
 import type { RequestHandler } from "./$types";
-import { NOTIFICATION_STORAGE_API_SECRET, NOTIFICATION_STORAGE_API_URL } from "$env/static/private";
+import { NOTIFICATION_SERVICE_API_SECRET, NOTIFICATION_SERVICE_API_URL } from "$env/static/private";
 
 const getSubscriptions = async (sub: string): Promise<PushSubscription[]> => {
-  const data = await fetch(`${NOTIFICATION_STORAGE_API_URL}/subscriptions/${sub}`, {
+  const data = await fetch(`${NOTIFICATION_SERVICE_API_URL}/subscriptions/${sub}`, {
     headers: {
-      Authorization: `Bearer ${NOTIFICATION_STORAGE_API_SECRET}`,
+      Authorization: `Bearer ${NOTIFICATION_SERVICE_API_SECRET}`,
     },
   });
   return data.json();
 };
 const putSubscriptions = async (sub: string, subscriptions: PushSubscription[]) => {
-  await fetch(`${NOTIFICATION_STORAGE_API_URL}/subscriptions/${sub}`, {
+  await fetch(`${NOTIFICATION_SERVICE_API_URL}/subscriptions/${sub}`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${NOTIFICATION_STORAGE_API_SECRET}`,
+      Authorization: `Bearer ${NOTIFICATION_SERVICE_API_SECRET}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(subscriptions),

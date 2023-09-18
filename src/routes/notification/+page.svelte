@@ -114,21 +114,21 @@
   </TopAppBar>
 {/if}
 <ResponsiveAutoAdjust {wideLayoutTopAppBar} {narrowLayoutTopAppBar}>
-  <Banner open={$notificationNotUpdated} centered autoClose={false}>
-    <Icon slot="icon" class="material-icons">priority_high</Icon>
-    <Label slot="label">通知設定が変更されました。現在の設定で通知を受け取るために設定を反映してください。</Label>
-    <svelte:fragment slot="actions">
-      <Button variant="outlined" disabled={$setNotificationDataMutation.isLoading} on:click={() => handleApply()}>
-        <Icon class="material-icons">upload</Icon>
-        <Label>通知設定を反映</Label>
-      </Button>
-    </svelte:fragment>
-  </Banner>
   {#if $notificationPermission === "granted"}
     {#if $getItemDataQuery.isFetching}
       <Loading />
     {/if}
     {#if $getItemDataQuery.data}
+      <Banner open={$notificationNotUpdated} centered autoClose={false}>
+        <Icon slot="icon" class="material-icons">priority_high</Icon>
+        <Label slot="label">通知設定が変更されました。現在の設定で通知を受け取るために設定を反映してください。</Label>
+        <svelte:fragment slot="actions">
+          <Button variant="outlined" disabled={$setNotificationDataMutation.isLoading} on:click={() => handleApply()}>
+            <Icon class="material-icons">upload</Icon>
+            <Label>通知設定を反映</Label>
+          </Button>
+        </svelte:fragment>
+      </Banner>
       <div class="stack">
         {#each sortItems($getItemDataQuery.data.items, $sortBy, $sortOrder) as item (item.id)}
           <NotificationCard {item} />
