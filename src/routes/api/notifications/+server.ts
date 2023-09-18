@@ -3,13 +3,13 @@ import { isSignedIn } from "svelte-google-auth";
 import type { NotificationData, NotificationDataV1 } from "../../../types/NotificationData";
 import type { RequestHandler } from "./$types";
 
-import { NOTIFICATION_STORAGE_API_SECRET, NOTIFICATION_STORAGE_API_URL } from "$env/static/private";
+import { NOTIFICATION_SERVICE_API_SECRET, NOTIFICATION_SERVICE_API_URL } from "$env/static/private";
 
 const getNotifications = async (sub: string): Promise<NotificationDataV1> => {
-  const res = await fetch(`${NOTIFICATION_STORAGE_API_URL}/notifications/${sub}`, {
+  const res = await fetch(`${NOTIFICATION_SERVICE_API_URL}/notifications/${sub}`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${NOTIFICATION_STORAGE_API_SECRET}`,
+      Authorization: `Bearer ${NOTIFICATION_SERVICE_API_SECRET}`,
       "Content-Type": "application/json",
     },
   });
@@ -18,10 +18,10 @@ const getNotifications = async (sub: string): Promise<NotificationDataV1> => {
 };
 
 const putNotifications = async (sub: string, notificationData: NotificationDataV1) => {
-  await fetch(`${NOTIFICATION_STORAGE_API_URL}/notifications/${sub}`, {
+  await fetch(`${NOTIFICATION_SERVICE_API_URL}/notifications/${sub}`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${NOTIFICATION_STORAGE_API_SECRET}`,
+      Authorization: `Bearer ${NOTIFICATION_SERVICE_API_SECRET}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(notificationData),
