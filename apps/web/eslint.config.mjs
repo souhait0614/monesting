@@ -17,6 +17,7 @@ export default tsEslint.config(
       globals: {
         ...globals.node,
         ...globals.browser,
+        React: 'readonly',
       },
       parser: tsEslint.parser,
       parserOptions: {
