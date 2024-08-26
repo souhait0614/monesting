@@ -1,7 +1,13 @@
 {
+  "editor.defaultFormatter": "EditorConfig.EditorConfig",
+  "eslint.format.enable": true,
+  "editor.formatOnSave": true,
   "eslint.workingDirectories": [
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "[javascript][javascriptreact][typescript][typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  }
 }
