@@ -8,16 +8,16 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@eslint/eslintrc": "^3.1.0",
-    "@taiyme/eslint-config": "^0.0.1",
-    "@types/eslint__eslintrc": "^2.1.2",
-    "@types/node": "^22.5.0",
-    "@typescript-eslint/utils": "^8.2.0",
-    "eslint": "^9.9.0",
-    "eslint-config-flat-gitignore": "^0.1.8",
-    "eslint-config-turbo": "^2.0.14",
-    "globals": "^15.9.0",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0"
+    "@eslint/eslintrc": "3.1.0",
+    "@taiyme/eslint-config": "0.0.1",
+    "@types/eslint__eslintrc": "2.1.2",
+    "@types/node": "22.5.0",
+    "@typescript-eslint/utils": "8.2.0",
+    "eslint": "9.9.0",
+    "eslint-config-flat-gitignore": "0.1.8",
+    "eslint-config-turbo": "2.0.14",
+    "globals": "15.9.0",
+    "typescript": "5.5.4",
+    "typescript-eslint": "8.2.0"
   }
 }
