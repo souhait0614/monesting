@@ -19,6 +19,7 @@ const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
 });
 
+const files = ['**/*.*{js,ts}', '**/*.{jsx,tsx}'];
 
 /** @type {Rules} */
 const onlyStylisticRules = Object.fromEntries(configBase.flatMap(({ rules = {} }) => Object.entries(rules).map(([key, rule]) => [key, rule && key.startsWith('@stylistic/') ? rule : 0])));
@@ -40,13 +41,19 @@ export default tsEslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    rules: {
+      'react/function-component-definition': [
+        'warn',
+        { namedComponents: 'function-declaration', unnamedComponents: 'arrow-function' },
+      ],
+    },
   },
   {
-    files: ['**/*.*{js,ts}', '**/*.{jsx,tsx}'],
+    files,
     extends: fixupConfigRules(compat.extends('plugin:@next/next/core-web-vitals')),
   },
   {
-    files: ['**/*.*{js,ts}', '**/*.{jsx,tsx}'],
+    files,
     plugins: {
       '@pandacss': pluginPanda,
     },
