@@ -1,3 +1,3 @@
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { Linter } from 'eslint';
 
-export const configBase: TSESLint.FlatConfig.ConfigArray;
+export const configBase: Linter.Config[];

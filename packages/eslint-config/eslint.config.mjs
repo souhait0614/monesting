@@ -7,6 +7,7 @@ import { configBase } from './index.mjs';
 
 export default tsEslint.config({
   extends: configBase,
+  name: 'project/settings/languages',
   languageOptions: {
     globals: {
       ...globals.node,

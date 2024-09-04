@@ -22,11 +22,12 @@ const compat = new FlatCompat({
 const files = ['**/*.*{js,ts}', '**/*.{jsx,tsx}'];
 
 /** @type {Rules} */
-const onlyStylisticRules = Object.fromEntries(configBase.flatMap(({ rules = {} }) => Object.entries(rules).map(([key, rule]) => [key, rule && key.startsWith('@stylistic/') ? rule : 0])));
+const onlyStylisticRules = Object.fromEntries(configBase.flatMap(({ rules = {} }) => Object.keys(rules).filter((key) => !key.startsWith('@stylistic/')).map((key) => [key, 0])));
 
 export default tsEslint.config(
+  ...configBase,
   {
-    extends: configBase,
+    name: 'project/settings/languages',
     languageOptions: {
       globals: {
         ...globals.node,
@@ -41,27 +42,43 @@ export default tsEslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
+    extends: fixupConfigRules(compat.extends('plugin:@next/next/core-web-vitals')).map(((config) => ({
+      ...config,
+      name: 'project/defaults/next',
+    }))),
+    name: 'project/settings/next',
+  },
+  {
+    name: 'project/defaults/panda-css',
+    files,
+    plugins: {
+      '@pandacss': pluginPanda,
+    },
+    rules: pluginPanda.configs.recommended.rules,
+  },
+  {
+    name: 'project/settings/panda-css',
+    rules: {
+      '@pandacss/prefer-longhand-properties': 'warn',
+      '@pandacss/prefer-unified-property-style': 'warn',
+      '@pandacss/no-physical-properties': 'warn',
+    },
+  },
+  {
+    name: 'project/settings/taiyme',
+    files: ['**/*.{jsx,tsx}'],
     rules: {
       'react/function-component-definition': [
         'warn',
         { namedComponents: 'function-declaration', unnamedComponents: 'arrow-function' },
       ],
+      '@stylistic/jsx/jsx-sort-props': 'warn',
     },
   },
   {
-    files,
-    extends: fixupConfigRules(compat.extends('plugin:@next/next/core-web-vitals')),
-  },
-  {
-    files,
-    plugins: {
-      '@pandacss': pluginPanda,
-    },
-    rules: {
-      ...pluginPanda.configs.recommended.rules,
-    },
-  },
-  {
+    name: 'project/settings/only-stylistic',
     files: ['src/components/**/*.tsx'],
     rules: onlyStylisticRules,
   },

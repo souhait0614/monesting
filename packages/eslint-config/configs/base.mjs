@@ -3,19 +3,24 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import configTaiyme from '@taiyme/eslint-config';
 import configGitignore from 'eslint-config-flat-gitignore';
-import tsEslint from 'typescript-eslint';
 
 const compat = new FlatCompat();
 
-export default tsEslint.config(
-  configGitignore(),
-  { extends: compat.extends('turbo') },
-  {
+/** @type {import("eslint").Linter.Config[]} */
+export default [
+  { name: 'base/defaults/gitignore', ...configGitignore() },
+  ...compat.extends('turbo').map((config) => ({
+    name: 'base/defaults/turbo',
+    ...config,
+  })),
+  ...configTaiyme.configs.typescript.map((config) => ({
+    name: 'base/defaults/taiyme',
     files: ['**/*.*{js,ts}', '**/*.{jsx,tsx}'],
-    extends: configTaiyme.configs.typescript,
-  },
-  {
+    ...config,
+  })),
+  ...configTaiyme.configs.react.map((config) => ({
+    name: 'base/defaults/taiyme',
     files: ['**/*.{jsx,tsx}'],
-    extends: configTaiyme.configs.react,
-  },
-);
+    ...config,
+  })),
+];
