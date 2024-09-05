@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@ark-ui/react": "^3.9.0",
+    "babel-plugin-react-compiler": "0.0.0-experimental-4e0eccf-20240903",
+    "eslint-plugin-react-compiler": "0.0.0-experimental-b8a7b48-20240903",
     "next": "15.0.0-rc.0",
     "next-auth": "^4.24.7",
     "react": "19.0.0-rc-eb3ad065-20240822",

@@ -26,9 +26,15 @@ importers:
       '@ark-ui/react':
         specifier: ^3.9.0
         version: 3.9.0(react-dom@19.0.0-rc-eb3ad065-20240822(react@19.0.0-rc-eb3ad065-20240822))(react@19.0.0-rc-eb3ad065-20240822)
+      babel-plugin-react-compiler:
+        specifier: 0.0.0-experimental-4e0eccf-20240903
+        version: 0.0.0-experimental-4e0eccf-20240903
+      eslint-plugin-react-compiler:
+        specifier: 0.0.0-experimental-b8a7b48-20240903
+        version: 0.0.0-experimental-b8a7b48-20240903(eslint@9.9.1)
       next:
         specifier: 15.0.0-rc.0
-        version: 15.0.0-rc.0(react-dom@19.0.0-rc-eb3ad065-20240822(react@19.0.0-rc-eb3ad065-20240822))(react@19.0.0-rc-eb3ad065-20240822)
+        version: 15.0.0-rc.0(@babel/core@7.25.2)(babel-plugin-react-compiler@0.0.0-experimental-4e0eccf-20240903)(react-dom@19.0.0-rc-eb3ad065-20240822(react@19.0.0-rc-eb3ad065-20240822))(react@19.0.0-rc-eb3ad065-20240822)
       next-auth:
         specifier: ^4.24.7
         version: 4.24.7(next@15.0.0-rc.0(react-dom@19.0.0-rc-eb3ad065-20240822(react@19.0.0-rc-eb3ad065-20240822))(react@19.0.0-rc-eb3ad065-20240822))(react-dom@19.0.0-rc-eb3ad065-20240822(react@19.0.0-rc-eb3ad065-20240822))(react@19.0.0-rc-eb3ad065-20240822)

@@ -6,6 +6,8 @@ import { FlatCompat } from '@eslint/eslintrc';
 // @ts-expect-error
 import pluginPanda from '@pandacss/eslint-plugin';
 import { configBase } from '@repo/eslint-config';
+// @ts-expect-error
+import pluginReactCompiler from 'eslint-plugin-react-compiler';
 import globals from 'globals';
 import tsEslint from 'typescript-eslint';
 
@@ -49,6 +51,15 @@ export default tsEslint.config(
       name: 'project/defaults/next',
     }))),
     name: 'project/settings/next',
+  },
+  {
+    name: 'project/settings/react-compiler',
+    plugins: {
+      'react-compiler': pluginReactCompiler,
+    },
+    rules: {
+      'react-compiler/react-compiler': 'warn',
+    },
   },
   {
     name: 'project/defaults/panda-css',
