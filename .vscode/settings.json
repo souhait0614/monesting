@@ -8,5 +8,8 @@
   ],
   "[javascript][javascriptreact][typescript][typescriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+  },
+  "cSpell.words": [
+    "Monesting"
+  ]
 }
