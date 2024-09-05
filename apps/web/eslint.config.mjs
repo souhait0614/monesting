@@ -23,10 +23,7 @@ const compat = new FlatCompat({
 
 const files = ['**/*.*{js,ts}', '**/*.{jsx,tsx}'];
 
-/** @type {Rules} */
-const onlyStylisticRules = Object.fromEntries(configBase.flatMap(({ rules = {} }) => Object.keys(rules).filter((key) => !key.startsWith('@stylistic/')).map((key) => [key, 0])));
-
-export default tsEslint.config(
+const baseConfigs = tsEslint.config(
   ...configBase,
   {
     name: 'project/settings/languages',
@@ -88,6 +85,13 @@ export default tsEslint.config(
       '@stylistic/jsx/jsx-sort-props': 'warn',
     },
   },
+);
+
+/** @type {Rules} */
+const onlyStylisticRules = Object.fromEntries(baseConfigs.flatMap(({ rules = {} }) => Object.keys(rules).filter((key) => !key.startsWith('@stylistic/')).map((key) => [key, 0])));
+
+export default tsEslint.config(
+  ...baseConfigs,
   {
     name: 'project/settings/only-stylistic',
     files: ['src/components/**/*.tsx'],
