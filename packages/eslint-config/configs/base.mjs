@@ -8,19 +8,17 @@ const compat = new FlatCompat();
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [
-  { name: 'base/defaults/gitignore', ...configGitignore() },
-  ...compat.extends('turbo').map((config) => ({
-    name: 'base/defaults/turbo',
-    ...config,
-  })),
+  configGitignore(),
   ...configTaiyme.configs.typescript.map((config) => ({
-    name: 'base/defaults/taiyme',
-    files: ['**/*.*{js,ts}', '**/*.{jsx,tsx}'],
     ...config,
+    files: ['**/*.*{js,ts}', '**/*.{jsx,tsx}'],
   })),
   ...configTaiyme.configs.react.map((config) => ({
-    name: 'base/defaults/taiyme',
-    files: ['**/*.{jsx,tsx}'],
     ...config,
+    files: ['**/*.{jsx,tsx}'],
+  })),
+  ...compat.extends('turbo').map((config) => ({
+    ...config,
+    name: 'base/turbo',
   })),
 ];

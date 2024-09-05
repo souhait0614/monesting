@@ -26,7 +26,7 @@ const files = ['**/*.*{js,ts}', '**/*.{jsx,tsx}'];
 const baseConfigs = tsEslint.config(
   ...configBase,
   {
-    name: 'project/settings/languages',
+    name: 'project/languages',
     languageOptions: {
       globals: {
         ...globals.node,
@@ -35,8 +35,6 @@ const baseConfigs = tsEslint.config(
       },
       parser: tsEslint.parser,
       parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
         project: './tsconfig.eslint.json',
         tsconfigRootDir: import.meta.dirname,
       },
@@ -45,12 +43,12 @@ const baseConfigs = tsEslint.config(
   {
     extends: fixupConfigRules(compat.extends('plugin:@next/next/core-web-vitals')).map(((config) => ({
       ...config,
-      name: 'project/defaults/next',
+      name: 'project/next',
     }))),
-    name: 'project/settings/next',
+    name: 'project/next',
   },
   {
-    name: 'project/settings/react-compiler',
+    name: 'project/react-compiler',
     plugins: {
       'react-compiler': pluginReactCompiler,
     },
@@ -59,7 +57,7 @@ const baseConfigs = tsEslint.config(
     },
   },
   {
-    name: 'project/defaults/panda-css',
+    name: 'project/panda-css',
     files,
     plugins: {
       '@pandacss': pluginPanda,
@@ -67,7 +65,7 @@ const baseConfigs = tsEslint.config(
     rules: pluginPanda.configs.recommended.rules,
   },
   {
-    name: 'project/settings/panda-css',
+    name: 'project/panda-css',
     rules: {
       '@pandacss/prefer-longhand-properties': 'warn',
       '@pandacss/prefer-unified-property-style': 'warn',
@@ -75,13 +73,19 @@ const baseConfigs = tsEslint.config(
     },
   },
   {
-    name: 'project/settings/taiyme',
+    name: 'project/react',
     files: ['**/*.{jsx,tsx}'],
     rules: {
       'react/function-component-definition': [
         'warn',
         { namedComponents: 'function-declaration', unnamedComponents: 'arrow-function' },
       ],
+    },
+  },
+  {
+    name: 'project/stylistic',
+    files: ['**/*.{jsx,tsx}'],
+    rules: {
       '@stylistic/jsx/jsx-sort-props': 'warn',
     },
   },
@@ -93,7 +97,7 @@ const onlyStylisticRules = Object.fromEntries(baseConfigs.flatMap(({ rules = {} 
 export default tsEslint.config(
   ...baseConfigs,
   {
-    name: 'project/settings/only-stylistic',
+    name: 'project/only-stylistic',
     files: ['src/components/**/*.tsx'],
     rules: onlyStylisticRules,
   },
