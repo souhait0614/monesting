@@ -6,17 +6,20 @@
     "prepare": "panda codegen",
     "dev": "next dev",
     "build": "next build",
+    "build:analyze": "cross-env ANALYZE=true next build",
     "start": "next start",
     "lint": "eslint .",
     "format": "eslint . --fix"
   },
   "dependencies": {
     "@ark-ui/react": "^3.10.0",
+    "@next/bundle-analyzer": "14.2.8",
     "@tabler/icons-react": "3.14.0",
     "babel-plugin-react-compiler": "0.0.0-experimental-4e0eccf-20240903",
     "eslint-plugin-react-compiler": "0.0.0-experimental-b8a7b48-20240903",
     "next": "15.0.0-rc.0",
     "next-auth": "^4.24.7",
+    "next-recompose-plugins": "3.0.0",
     "next-themes": "0.3.0",
     "react": "19.0.0-rc-eb3ad065-20240822",
     "react-dom": "19.0.0-rc-eb3ad065-20240822"
@@ -33,10 +36,23 @@
     "@types/node": "20.16.1",
     "@types/react": "18",
     "@types/react-dom": "18",
+    "cross-env": "7.0.3",
     "eslint": "9.9.1",
     "eslint-config-next": "15.0.0-rc.0",
     "globals": "15.9.0",
     "typescript": "5.5.4",
     "typescript-eslint": "8.4.0"
-  }
+  },
+  "browserslist":[
+    ">= 1%",
+    "last 1 major version",
+    "not dead",
+    "Chrome >= 99",
+    "Edge >= 99",
+    "Firefox >= 97",
+    "iOS >= 15.4",
+    "Safari >= 15.4",
+    "Android >= 115",
+    "Opera >= 73"
+  ]
 }

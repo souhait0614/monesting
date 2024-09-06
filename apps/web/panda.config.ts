@@ -40,7 +40,7 @@ export default defineConfig({
       },
     },
   },
-
+  minify: true,
   jsxFramework: 'react',
   // The output directory for your css system
   outdir: 'styled-system',
