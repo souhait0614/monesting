@@ -98,7 +98,7 @@ export default tsEslint.config(
   ...baseConfigs,
   {
     name: 'project/only-stylistic',
-    files: ['src/components/**/*.tsx'],
+    files: ['src/components/ui/**/*.*'],
     rules: onlyStylisticRules,
   },
 );
