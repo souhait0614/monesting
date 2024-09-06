@@ -1,14 +1,14 @@
 import {
-  createContext,
   type ElementType,
-  forwardRef,
   type ForwardRefExoticComponent,
   type PropsWithoutRef,
   type RefAttributes,
+  createContext,
+  forwardRef,
   useContext,
 } from 'react';
 import { cx } from 'styled-system/css';
-import { isCssProperty, styled, type StyledComponent } from 'styled-system/jsx';
+import { type StyledComponent, isCssProperty, styled } from 'styled-system/jsx';
 
 type Props = Record<string, unknown>;
 type Recipe = {
@@ -23,7 +23,6 @@ const shouldForwardProp = (prop: string, variantKeys: string[], options: Options
 export const createStyleContext = <R extends Recipe>(recipe: R) => {
   const StyleContext = createContext<Record<Slot<R>, string> | null>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   const withRootProvider = <P extends {}>(Component: ElementType) => {
     const StyledComponent = (props: P) => {
       const [variantProps, otherProps] = recipe.splitVariantProps(props);
@@ -58,13 +57,12 @@ export const createStyleContext = <R extends Recipe>(recipe: R) => {
         <StyleContext.Provider value={slotStyles}>
           <StyledComponent
             {...otherProps}
+            className={cx(slotStyles?.[slot], props.className)}
             ref={ref}
-            className={cx(slotStyles[slot], props.className)}
           />
         </StyleContext.Provider>
       );
     });
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     StyledSlotProvider.displayName = Component.displayName || Component.name;
 
@@ -79,10 +77,9 @@ export const createStyleContext = <R extends Recipe>(recipe: R) => {
     const StyledSlotComponent = forwardRef<T, P>((props, ref) => {
       const slotStyles = useContext(StyleContext);
       return (
-        <StyledComponent {...props} ref={ref} className={cx(slotStyles?.[slot], props.className)} />
+        <StyledComponent {...props} className={cx(slotStyles?.[slot], props.className)} ref={ref} />
       );
     });
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     StyledSlotComponent.displayName = Component.displayName || Component.name;
 
