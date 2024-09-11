@@ -22,7 +22,8 @@
     "next-recompose-plugins": "3.0.0",
     "next-themes": "0.3.0",
     "react": "19.0.0-rc-eb3ad065-20240822",
-    "react-dom": "19.0.0-rc-eb3ad065-20240822"
+    "react-dom": "19.0.0-rc-eb3ad065-20240822",
+    "zustand": "5.0.0-rc.1"
   },
   "devDependencies": {
     "@eslint/compat": "1.1.1",
@@ -43,7 +44,7 @@
     "typescript": "5.5.4",
     "typescript-eslint": "8.4.0"
   },
-  "browserslist":[
+  "browserslist": [
     ">= 1%",
     "last 1 major version",
     "not dead",
