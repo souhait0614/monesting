@@ -3,8 +3,6 @@
 
 import { fixupConfigRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
-// @ts-expect-error
-import pluginPanda from '@pandacss/eslint-plugin';
 import { configBase } from '@repo/eslint-config';
 // @ts-expect-error
 import pluginReactCompiler from 'eslint-plugin-react-compiler';
@@ -20,8 +18,6 @@ import tsEslint from 'typescript-eslint';
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
 });
-
-const files = ['**/*.*{js,ts}', '**/*.{jsx,tsx}'];
 
 const baseConfigs = tsEslint.config(
   ...configBase,
@@ -57,28 +53,21 @@ const baseConfigs = tsEslint.config(
     },
   },
   {
-    name: 'project/panda-css',
-    files,
-    plugins: {
-      '@pandacss': pluginPanda,
-    },
-    rules: pluginPanda.configs.recommended.rules,
-  },
-  {
-    name: 'project/panda-css',
-    rules: {
-      '@pandacss/prefer-longhand-properties': 'warn',
-      '@pandacss/prefer-unified-property-style': 'warn',
-      '@pandacss/no-physical-properties': 'warn',
-    },
-  },
-  {
     name: 'project/react',
     files: ['**/*.{jsx,tsx}'],
     rules: {
       'react/function-component-definition': [
         'warn',
         { namedComponents: 'function-declaration', unnamedComponents: 'arrow-function' },
+      ],
+      'react/no-unknown-property': [
+        'error',
+        {
+          ignore: [
+            // NOTE: Pigment CSS
+            'sx',
+          ],
+        },
       ],
     },
   },

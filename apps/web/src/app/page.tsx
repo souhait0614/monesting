@@ -1,36 +1,47 @@
 'use client';
 
+import { Button } from '@mui/material';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { center } from 'styled-system/patterns';
-
-import { Button } from '~/components/ui/button';
 
 export default function Home() {
   const { data, status } = useSession();
 
   if (status === 'loading') {
     return (
-      <div className={center({
+      <div sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: '100vh',
-      })}
-      >Loading...
+        flexDirection: 'column',
+      }}
+      >
+        Loading...
       </div>
     );
   }
   if (status !== 'authenticated') {
     return (
-      <div className={center({
+      <div sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: '100vh',
-      })}
+        flexDirection: 'column',
+      }}
       >
         <Button onClick={() => signIn('google')}>さいんいん</Button>
       </div>
     );
   }
   return (
-    <div className={center({
+    <div sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       height: '100vh',
-    })}
+      flexDirection: 'column',
+    }}
     >
       <p>{data.user?.email}</p>
       <Button onClick={() => signOut()}>さいんあうと</Button>
